@@ -1,0 +1,30 @@
+# JUCE auto-generated folders
+Builds/
+JuceLibraryCode/
+
+# Visual Studio project files
+*.sln
+*.vcxproj*
+*.filters
+*.user
+*.suo
+*.opensdf
+*.sdf
+*.ipch
+.vs/
+
+# CMake build artifacts
+CMakeFiles/
+CMakeCache.txt
+cmake_install.cmake
+Makefile
+
+# Build output folders
+bin/
+build/
+Debug/
+Release/
+
+# OS-specific clutter
+Thumbs.db
+.DS_Store
