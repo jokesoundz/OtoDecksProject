@@ -76,7 +76,7 @@ void PlaylistComponent::paintRowBackground(Graphics& g,
     // just highlight selected rows
     if (rowIsSelected)
     {
-        g.fillAll(Colours::orange);
+        g.fillAll(Colours::greenyellow);
     }
     else {
         g.fillAll(Colours::darkgrey);
