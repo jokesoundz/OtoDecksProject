@@ -92,7 +92,7 @@ void DJAudioPlayer::start()
 }
 void DJAudioPlayer::stop()
 {
-  transportSource.stop();
+    transportSource.stop();
 }
 
 double DJAudioPlayer::getPositionRelative()
