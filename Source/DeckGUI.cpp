@@ -76,12 +76,14 @@ void DeckGUI::paint (Graphics& g)
 void DeckGUI::resized()
 {
     double rowH = getHeight() / 8; 
-    playButton.setBounds(0, 0, getWidth(), rowH);
-    stopButton.setBounds(0, rowH, getWidth(), rowH);  
-    volSlider.setBounds(0, rowH * 2, getWidth(), rowH);
-    speedSlider.setBounds(0, rowH * 3, getWidth(), rowH);
-    posSlider.setBounds(0, rowH * 4, getWidth(), rowH);
-    waveformDisplay.setBounds(0, rowH * 5, getWidth(), rowH * 2);
+    waveformDisplay.setBounds(0, 0, getWidth(), rowH * 2);
+    posSlider.setBounds(0, rowH * 2, getWidth(), rowH);
+    posSlider.setTextBoxStyle(juce::Slider::NoTextBox, false, 0, 0);
+
+    playButton.setBounds(0, rowH *3, getWidth(), rowH);
+    stopButton.setBounds(0, rowH *4, getWidth(), rowH);  
+    volSlider.setBounds(0, rowH * 5, getWidth(), rowH);
+    speedSlider.setBounds(0, rowH * 6, getWidth(), rowH);
     loadButton.setBounds(0, rowH * 7, getWidth(), rowH);
 
 }
@@ -135,17 +137,17 @@ void DeckGUI::sliderValueChanged (Slider *slider)
 
 bool DeckGUI::isInterestedInFileDrag (const StringArray &files)
 {
-  std::cout << "DeckGUI::isInterestedInFileDrag" << std::endl;
-  return true; 
+    std::cout << "DeckGUI::isInterestedInFileDrag" << std::endl;
+    return true; 
 }
 
 void DeckGUI::filesDropped (const StringArray &files, int x, int y)
 {
-  std::cout << "DeckGUI::filesDropped" << std::endl;
-  if (files.size() == 1)
-  {
-    player->loadURL(URL{File{files[0]}});
-  }
+    std::cout << "DeckGUI::filesDropped" << std::endl;
+    if (files.size() == 1)
+    {
+        player->loadURL(URL{File{files[0]}});
+    }
 }
 
 void DeckGUI::timerCallback()
@@ -153,6 +155,12 @@ void DeckGUI::timerCallback()
     //std::cout << "DeckGUI::timerCallback" << std::endl;
     waveformDisplay.setPositionRelative(
             player->getPositionRelative());
+
+    if (!posSlider.isMouseButtonDown())
+    {
+        posSlider.setValue(player->getPositionRelative(), juce::dontSendNotification);
+    }
+    
 }
 
 

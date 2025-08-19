@@ -46,21 +46,21 @@ void WaveformDisplay::paint (Graphics& g)
     g.setColour (Colours::orange);
     if(fileLoaded)
     {
-      audioThumb.drawChannel(g, 
-        getLocalBounds(), 
-        0, 
-        audioThumb.getTotalLength(), 
-        0, 
-        1.0f
-      );
-      g.setColour(Colours::lightgreen);
-      g.drawRect(position * getWidth(), 0, getWidth() / 20, getHeight());
+        audioThumb.drawChannel(g, 
+                                getLocalBounds(), 
+                                0, 
+                                audioThumb.getTotalLength(), 
+                                0, 
+                                1.0f
+                                );
+        g.setColour(Colours::lightgreen);
+        g.drawRect(position * getWidth(), 0, getWidth() / 20, getHeight());
     }
     else 
     {
-      g.setFont (20.0f);
-      g.drawText ("File not loaded...", getLocalBounds(),
-                  Justification::centred, true);   // draw some placeholder text
+        g.setFont (20.0f);
+        g.drawText ("File not loaded...", getLocalBounds(),
+                    Justification::centred, true);   // draw some placeholder text
 
     }
 }
@@ -74,16 +74,16 @@ void WaveformDisplay::resized()
 
 void WaveformDisplay::loadURL(URL audioURL)
 {
-  audioThumb.clear();
-  fileLoaded  = audioThumb.setSource(new URLInputSource(audioURL));
-  if (fileLoaded)
-  {
-    std::cout << "wfd: loaded! " << std::endl;
-    repaint();
-  }
-  else {
-    std::cout << "wfd: not loaded! " << std::endl;
-  }
+    audioThumb.clear();
+    fileLoaded  = audioThumb.setSource(new URLInputSource(audioURL));
+    if (fileLoaded)
+    {
+        std::cout << "wfd: loaded! " << std::endl;
+        repaint();
+    }
+    else {
+        std::cout << "wfd: not loaded! " << std::endl;
+    }
 
 }
 
@@ -97,13 +97,11 @@ void WaveformDisplay::changeListenerCallback (ChangeBroadcaster *source)
 
 void WaveformDisplay::setPositionRelative(double pos)
 {
-  if (pos != position)
-  {
-    position = pos;
-    repaint();
-  }
-
-  
+    if (pos != position)
+    {
+        position = pos;
+        repaint();
+    }
 }
 
 
