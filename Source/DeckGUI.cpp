@@ -29,6 +29,8 @@ DeckGUI::DeckGUI(DJAudioPlayer* _player,
 
     addAndMakeVisible(waveformDisplay);
 
+    addAndMakeVisible(speedLabel);
+    addAndMakeVisible(volLabel);
 
     playButton.addListener(this);
     stopButton.addListener(this);
@@ -40,11 +42,19 @@ DeckGUI::DeckGUI(DJAudioPlayer* _player,
 
 
     volSlider.setRange(0.0, 1.0);
-    speedSlider.setRange(0.0, 100.0);
+    speedSlider.setRange(0.0, 10.0);
     posSlider.setRange(0.0, 1.0);
 
     volSlider.setValue(0.7); //ensures slider position (for volume) is set to 70% at start of app
     speedSlider.setValue(1.0); //ensures sliderposition is set to default bpm at start of app
+
+    speedSlider.setSkewFactorFromMidPoint(1.0); //makes tempo slider more intuitive
+
+    volLabel.setText("Gain", dontSendNotification);
+    volLabel.attachToComponent(&volSlider, true);
+
+    speedLabel.setText("Speed adjust", dontSendNotification);
+    speedLabel.attachToComponent(&speedSlider, true);
 
     startTimer(20); //TODO: check this doesn't cause lag, was originally 500
 
@@ -78,15 +88,18 @@ void DeckGUI::paint (Graphics& g)
 
 void DeckGUI::resized()
 {
-    double rowH = getHeight() / 8; 
+    double rowH = getHeight() / 8;
+
+    double border = 120;
+
     waveformDisplay.setBounds(0, 0, getWidth(), rowH * 2);
     posSlider.setBounds(0, rowH * 2, getWidth(), rowH);
     posSlider.setTextBoxStyle(juce::Slider::NoTextBox, false, 0, 0);
 
     playButton.setBounds(0, rowH *3, getWidth(), rowH);
     stopButton.setBounds(0, rowH *4, getWidth(), rowH);  
-    volSlider.setBounds(0, rowH * 5, getWidth(), rowH);
-    speedSlider.setBounds(0, rowH * 6, getWidth(), rowH);
+    volSlider.setBounds(border, rowH * 5, getWidth() - border, rowH);
+    speedSlider.setBounds(border, rowH * 6, getWidth() - border, rowH);
     loadButton.setBounds(0, rowH * 7, getWidth(), rowH);
 
 }

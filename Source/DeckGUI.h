@@ -54,6 +54,9 @@ private:
     Slider speedSlider;
     Slider posSlider;
 
+    Label volLabel; //volume-gain
+    Label speedLabel; //speed-tempo-adjust
+
     WaveformDisplay waveformDisplay;
 
     DJAudioPlayer* player; 
