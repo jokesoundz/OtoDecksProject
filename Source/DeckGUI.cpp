@@ -90,9 +90,10 @@ void DeckGUI::resized()
 {
     double rowH = getHeight() / 8;
 
-    double border = 120;
+    const int border = 120;
+    const int waveformBorder = 10;
 
-    waveformDisplay.setBounds(0, 0, getWidth(), rowH * 2);
+    waveformDisplay.setBounds(waveformBorder, 0, getWidth() - waveformBorder * 2, rowH * 2);
     posSlider.setBounds(0, rowH * 2, getWidth(), rowH);
     posSlider.setTextBoxStyle(juce::Slider::NoTextBox, false, 0, 0);
 
