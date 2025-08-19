@@ -43,18 +43,37 @@ public:
 
     void cellClicked(int rowNumber, int columnId, const MouseEvent&) override;
 
-    Component* refreshComponentForCell(int rowNumber, int columnId, bool isRowSelected, Component* existingComponentToUpdate) override;
+    Component* refreshComponentForCell(int rowNumb, int columnId, bool isRowSelected, Component* existingComponentToUpdate) override;
 
     void buttonClicked(juce::Button* button) override;
+
+    /** row = which rack, deck = 1 or 2 */
+    std::function<void(int row, int deck)> onLoadToDeck;
+
+    int getNumFiles() const noexcept
+    {
+        return importedFiles.size();
+    }
+
+    File getFileAt(int index) const
+    {
+        jassert(index >= 0 && index < importedFiles.size());
+        return importedFiles[index];
+    }
 
 
 private:
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (PlaylistComponent)
 
-    FileChooser fChooser{ "Select a file..." };
+    FileChooser fChooser{ "Select a file..." ,
+                            File::getSpecialLocation(File::userHomeDirectory),
+                            "*.mp3;*.wav;*.aiff",
+                            true
+                            };
 
 	TableListBox tableComponent;
     std::vector<std::string> trackTitles;
     Label tableHeaderLabel;
     TextButton importButton; //button for importing files from computer
+    std::vector<File> importedFiles;
 };

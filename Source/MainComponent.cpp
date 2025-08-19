@@ -33,6 +33,24 @@ MainComponent::MainComponent()
     
 	addAndMakeVisible(playlistComponent);
 
+    playlistComponent.onLoadToDeck = [this](int row, int deckNum)
+    {
+        if (row < 0 || row >= (int)playlistComponent.getNumFiles())
+        {
+            return;
+        }
+
+        auto fileToLoad = playlistComponent.getFileAt(row);
+        if (deckNum == 1)
+        {
+            deckGUI1.loadFile(fileToLoad);
+        }
+
+        else if (deckNum == 2)
+        {
+            deckGUI2.loadFile(fileToLoad);
+        }
+    };
 
     formatManager.registerBasicFormats();
 }

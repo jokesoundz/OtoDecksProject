@@ -195,3 +195,10 @@ void DeckGUI::updatePlayPauseButton()
         playPauseButton.setButtonText("PLAY");
     }
 }
+
+void DeckGUI::loadFile(const File& file)
+{
+    player->loadURL(URL{file});
+    waveformDisplay.loadURL(URL{file});
+    updatePlayPauseButton();
+}

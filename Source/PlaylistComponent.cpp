@@ -28,16 +28,17 @@ PlaylistComponent::PlaylistComponent()
 
     tableComponent.setModel(this);
 
-    trackTitles.push_back("Track 1");
-    trackTitles.push_back("Track 2");
-    trackTitles.push_back("Track 3");
-    trackTitles.push_back("Track 4");
+    //trackTitles.push_back("Track 1");
+    //trackTitles.push_back("Track 2");
+    //trackTitles.push_back("Track 3");
+    //trackTitles.push_back("Track 4");
 
     tableHeaderLabel.setText("Tracks Library", dontSendNotification);
     tableHeaderLabel.setFont(Font(16.0f, Font::bold));
     tableHeaderLabel.setJustificationType(Justification::centredLeft);
 
     importButton.setButtonText("Import File(s)...");
+    importButton.addListener(this);
 
 }
 
@@ -120,34 +121,54 @@ void PlaylistComponent::cellClicked(int rowNumber, int columnId, const MouseEven
 }
 
 Component* PlaylistComponent::refreshComponentForCell(
-    int rowNumber,
+    int rowNum,
     int columnId,
     bool isRowSelected,
     Component* existingComponentToUpdate)
 {
-    if (columnId == 2)
-    {
-        if (existingComponentToUpdate == nullptr)
-        {
-            TextButton * btn = new TextButton("load to deck 1");
-            btn->addListener(this);
-            String id{ std::to_string(rowNumber) };
-            btn->setComponentID(id);
+    //if (columnId == 2)
+    //{
+    //    if (existingComponentToUpdate == nullptr)
+    //    {
+    //        TextButton * btn = new TextButton("load to deck 1");
+    //        btn->addListener(this);
+    //        String id{ std::to_string(rowNumber) };
+    //        btn->setComponentID(id);
 
-            existingComponentToUpdate = btn;
-        }
-    }
-    else if (columnId == 3)
-    {
-        if (existingComponentToUpdate == nullptr)
-        {
-            TextButton* btn = new TextButton("load to deck 2");
-            btn->addListener(this);
-            String id{ std::to_string(rowNumber) };
-            btn->setComponentID(id);
+    //        existingComponentToUpdate = btn;
+    //    }
+    //}
+    //else if (columnId == 3)
+    //{
+    //    if (existingComponentToUpdate == nullptr)
+    //    {
+    //        TextButton* btn = new TextButton("load to deck 2");
+    //        btn->addListener(this);
+    //        String id{ std::to_string(rowNumber) };
+    //        btn->setComponentID(id);
 
-            existingComponentToUpdate = btn;
+    //        existingComponentToUpdate = btn;
+    //    }
+    //}
+
+    if (columnId == 2 || columnId == 3)
+    {
+        int deckNum = (columnId == 2 ? 1 : 2);
+        auto* btn = static_cast<TextButton*>(existingComponentToUpdate);
+
+        if (btn == nullptr)
+        {
+            btn = new TextButton("Load to Deck " + String(deckNum));
         }
+
+        btn->onClick = [this, rowNum, deckNum]()
+        {
+            if (onLoadToDeck)
+            {
+                onLoadToDeck(rowNum, deckNum);
+            }
+        };
+        return btn;
     }
     return existingComponentToUpdate;
 }
@@ -168,6 +189,7 @@ void PlaylistComponent::buttonClicked(Button* button)
                 if (file.existsAsFile())
                 {
                     trackTitles.push_back(file.getFileName().toStdString());
+                    importedFiles.push_back(file);
                 }
 
             }
