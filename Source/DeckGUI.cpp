@@ -43,7 +43,10 @@ DeckGUI::DeckGUI(DJAudioPlayer* _player,
     speedSlider.setRange(0.0, 100.0);
     posSlider.setRange(0.0, 1.0);
 
-    startTimer(500);
+    volSlider.setValue(0.7); //ensures slider position (for volume) is set to 70% at start of app
+    speedSlider.setValue(1.0); //ensures sliderposition is set to default bpm at start of app
+
+    startTimer(20); //TODO: check this doesn't cause lag, was originally 500
 
 
 }
