@@ -51,6 +51,10 @@ public:
 private:
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (PlaylistComponent)
 
+    FileChooser fChooser{ "Select a file..." };
+
 	TableListBox tableComponent;
     std::vector<std::string> trackTitles;
+    Label tableHeaderLabel;
+    TextButton importButton; //button for importing files from computer
 };

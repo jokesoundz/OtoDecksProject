@@ -18,9 +18,13 @@ PlaylistComponent::PlaylistComponent()
     // initialise any special settings that your component needs.
 
 	addAndMakeVisible(tableComponent);
+    addAndMakeVisible(tableHeaderLabel);
+    addAndMakeVisible(importButton);
+
     
     tableComponent.getHeader().addColumn("Track title", 1, 400);
     tableComponent.getHeader().addColumn("", 2, 200);
+    tableComponent.getHeader().addColumn("", 3, 200);
 
     tableComponent.setModel(this);
 
@@ -28,6 +32,13 @@ PlaylistComponent::PlaylistComponent()
     trackTitles.push_back("Track 2");
     trackTitles.push_back("Track 3");
     trackTitles.push_back("Track 4");
+
+    tableHeaderLabel.setText("Tracks Library", dontSendNotification);
+    tableHeaderLabel.setFont(Font(16.0f, Font::bold));
+    tableHeaderLabel.setJustificationType(Justification::centredLeft);
+
+    importButton.setButtonText("Import File(s)...");
+
 }
 
 PlaylistComponent::~PlaylistComponent()
@@ -58,7 +69,13 @@ void PlaylistComponent::resized()
 {
     // This method is where you should set the bounds of any child
     // components that your component contains..
-    tableComponent.setBounds(0, 0, getWidth(), getHeight());
+
+    const int headerArea = 40;
+
+    tableHeaderLabel.setBounds(0, 0, getWidth() - 120, headerArea);
+    importButton.setBounds(getWidth() - 120, 0, 120, headerArea);
+
+    tableComponent.setBounds(0, headerArea, getWidth(), getHeight());
 
 }
 
@@ -112,7 +129,19 @@ Component* PlaylistComponent::refreshComponentForCell(
     {
         if (existingComponentToUpdate == nullptr)
         {
-            TextButton * btn = new TextButton("play");
+            TextButton * btn = new TextButton("load to deck 1");
+            btn->addListener(this);
+            String id{ std::to_string(rowNumber) };
+            btn->setComponentID(id);
+
+            existingComponentToUpdate = btn;
+        }
+    }
+    else if (columnId == 3)
+    {
+        if (existingComponentToUpdate == nullptr)
+        {
+            TextButton* btn = new TextButton("load to deck 2");
             btn->addListener(this);
             String id{ std::to_string(rowNumber) };
             btn->setComponentID(id);
@@ -125,7 +154,30 @@ Component* PlaylistComponent::refreshComponentForCell(
 
 void PlaylistComponent::buttonClicked(Button* button)
 {
-    int id = std::stoi(button->getComponentID().toStdString());
-    DBG("PlaylistComponent::buttonClicked " << trackTitles[id]);
 
+
+    if (button == &importButton)
+    {
+        auto fileChooserFlags = FileBrowserComponent::canSelectFiles |
+                                FileBrowserComponent::canSelectMultipleItems;
+        fChooser.launchAsync(fileChooserFlags, [this](const FileChooser& chooser)
+        {
+            //auto chosenFiles = chooser.getResults();
+            for (const auto& file : chooser.getResults())
+            {
+                if (file.existsAsFile())
+                {
+                    trackTitles.push_back(file.getFileName().toStdString());
+                }
+
+            }
+            
+            tableComponent.updateContent();
+        });
+    }
+    else
+    {
+        int id = std::stoi(button->getComponentID().toStdString());
+        DBG("PlaylistComponent::buttonClicked " << trackTitles[id]);
+    }
 }

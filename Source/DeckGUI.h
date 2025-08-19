@@ -46,7 +46,7 @@ public:
     void timerCallback() override; 
 
 private:
-    juce::FileChooser fChooser{"Select a file..."};
+    //juce::FileChooser fChooser{"Select a file..."};
 
     TextButton playPauseButton{"PLAY"}; //initialise to PLAY
     //TextButton stopButton{"STOP"};

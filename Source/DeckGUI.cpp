@@ -122,16 +122,17 @@ void DeckGUI::buttonClicked(Button* button)
     //}
     if (button == &loadButton)
     {
-       auto fileChooserFlags = 
-        FileBrowserComponent::canSelectFiles;
-        fChooser.launchAsync(fileChooserFlags, [this](const FileChooser& chooser)
-        {
-            File chosenFile = chooser.getResult();
-            if (chosenFile.exists()){
-                player->loadURL(URL{chooser.getResult()});
-                waveformDisplay.loadURL(URL{chooser.getResult()});
-            }
-        });
+       //auto fileChooserFlags = 
+       // FileBrowserComponent::canSelectFiles;
+       // fChooser.launchAsync(fileChooserFlags, [this](const FileChooser& chooser)
+       // {
+       //     File chosenFile = chooser.getResult();
+       //     if (chosenFile.exists()){
+       //         player->loadURL(URL{chooser.getResult()});
+       //         waveformDisplay.loadURL(URL{chooser.getResult()});
+       //     }
+       // })
+       return;
     }
 }
 
