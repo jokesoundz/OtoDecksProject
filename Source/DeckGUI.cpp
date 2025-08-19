@@ -19,8 +19,8 @@ DeckGUI::DeckGUI(DJAudioPlayer* _player,
                waveformDisplay(formatManagerToUse, cacheToUse)
 {
 
-    addAndMakeVisible(playButton);
-    addAndMakeVisible(stopButton);
+    addAndMakeVisible(playPauseButton);
+    addAndMakeVisible(cueButton);
     addAndMakeVisible(loadButton);
        
     addAndMakeVisible(volSlider);
@@ -32,8 +32,8 @@ DeckGUI::DeckGUI(DJAudioPlayer* _player,
     addAndMakeVisible(speedLabel);
     addAndMakeVisible(volLabel);
 
-    playButton.addListener(this);
-    stopButton.addListener(this);
+    playPauseButton.addListener(this);
+    cueButton.addListener(this);
     loadButton.addListener(this);
 
     volSlider.addListener(this);
@@ -97,8 +97,8 @@ void DeckGUI::resized()
     posSlider.setBounds(0, rowH * 2, getWidth(), rowH);
     posSlider.setTextBoxStyle(juce::Slider::NoTextBox, false, 0, 0);
 
-    playButton.setBounds(0, rowH *3, getWidth(), rowH);
-    stopButton.setBounds(0, rowH *4, getWidth(), rowH);  
+    playPauseButton.setBounds(0, rowH *3, getWidth(), rowH);
+    cueButton.setBounds(0, rowH *4, getWidth(), rowH);  
     volSlider.setBounds(border, rowH * 5, getWidth() - border, rowH);
     speedSlider.setBounds(border, rowH * 6, getWidth() - border, rowH);
     loadButton.setBounds(0, rowH * 7, getWidth(), rowH);
@@ -107,17 +107,19 @@ void DeckGUI::resized()
 
 void DeckGUI::buttonClicked(Button* button)
 {
-    if (button == &playButton)
+    if (button == &playPauseButton)
     {
-        std::cout << "Play button was clicked " << std::endl;
-        player->start();
+        std::cout << "Play/Pause button was clicked " << std::endl;
+        player->togglePlayPause();
+        //player->start();
+        updatePlayPauseButton();
     }
-     if (button == &stopButton)
-    {
-        std::cout << "Stop button was clicked " << std::endl;
-        player->stop();
+    // if (button == &stopButton)
+    //{
+    //    std::cout << "Stop button was clicked " << std::endl;
+    //    player->stop();
 
-    }
+    //}
     if (button == &loadButton)
     {
        auto fileChooserFlags = 
@@ -178,8 +180,17 @@ void DeckGUI::timerCallback()
         posSlider.setValue(player->getPositionRelative(), juce::dontSendNotification);
     }
     
+    updatePlayPauseButton(); //ensures play/pause info is correctly displayed, e.g. when track ends
 }
 
-
-    
-
+void DeckGUI::updatePlayPauseButton()
+{
+    if (player->isPlaying())
+    {
+        playPauseButton.setButtonText("PAUSE");
+    }
+    else
+    {
+        playPauseButton.setButtonText("PLAY");
+    }
+}

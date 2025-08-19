@@ -86,16 +86,35 @@ void DJAudioPlayer::setPositionRelative(double pos)
 }
 
 
-void DJAudioPlayer::start()
-{
-    transportSource.start();
-}
-void DJAudioPlayer::stop()
-{
-    transportSource.stop();
-}
+//void DJAudioPlayer::start()
+//{
+//    transportSource.start();
+//}
+//void DJAudioPlayer::stop()
+//{
+//    transportSource.stop();
+//}
+
+
 
 double DJAudioPlayer::getPositionRelative()
 {
     return transportSource.getCurrentPosition() / transportSource.getLengthInSeconds();
+}
+
+bool DJAudioPlayer::isPlaying()
+{
+    return transportSource.isPlaying();
+}
+
+void DJAudioPlayer::togglePlayPause()
+{
+    if (isPlaying())
+    {
+        transportSource.stop();
+    }
+    else
+    {
+        transportSource.start();
+    }
 }

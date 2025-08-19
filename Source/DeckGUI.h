@@ -35,6 +35,8 @@ public:
      /** implement Button::Listener */
     void buttonClicked (Button *) override;
 
+    void updatePlayPauseButton();
+
     /** implement Slider::Listener */
     void sliderValueChanged (Slider *slider) override;
 
@@ -46,8 +48,9 @@ public:
 private:
     juce::FileChooser fChooser{"Select a file..."};
 
-    TextButton playButton{"PLAY"};
-    TextButton stopButton{"STOP"};
+    TextButton playPauseButton{"PLAY"}; //initialise to PLAY
+    //TextButton stopButton{"STOP"};
+    TextButton cueButton{ "CUE" };
     TextButton loadButton{"LOAD"};
   
     Slider volSlider; 
