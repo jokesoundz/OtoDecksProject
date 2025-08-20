@@ -22,9 +22,16 @@ PlaylistComponent::PlaylistComponent()
     addAndMakeVisible(importButton);
 
     
-    tableComponent.getHeader().addColumn("Track title", 1, 400);
-    tableComponent.getHeader().addColumn("", 2, 200);
-    tableComponent.getHeader().addColumn("", 3, 200);
+    tableComponent.getHeader().addColumn("del", 1, 30);
+    //tableComponent.getHeader().setColumnVisible(1, true);
+    !tableComponent.getHeader().resizable;
+
+    tableComponent.getHeader().addColumn("Track", 2, 150);
+    tableComponent.getHeader().addColumn("Artist", 3, 150);
+    tableComponent.getHeader().addColumn("Length", 4, 70);
+    tableComponent.getHeader().addColumn("", 5, 100);
+    tableComponent.getHeader().addColumn("", 6, 100);
+
 
     tableComponent.setModel(this);
 
@@ -151,9 +158,40 @@ Component* PlaylistComponent::refreshComponentForCell(
     //    }
     //}
 
-    if (columnId == 2 || columnId == 3)
+    //tableComponent.getHeader().setColumnWidth(1, 25); //disables changes to column 1 (delete checkbox column)
+
+
+    if (columnId == 1)
     {
-        int deckNum = (columnId == 2 ? 1 : 2);
+        auto* checkbox = new ToggleButton();
+        checkbox->setClickingTogglesState(true);
+        checkbox->setToggleState(false, dontSendNotification);
+        return checkbox;
+
+        //ToggleButton* checkbox;
+
+        //if (existingComponentToUpdate == nullptr)
+        //{
+        //    checkbox = new ToggleButton();
+        //    checkbox->setClickingTogglesState(true);
+        //    checkbox->onClick = [this, checkbox, rowNum]
+        //        {
+        //            importedFiles[rowNum].shouldDelete = checkbox->getToggleState();
+        //        };
+        //}
+        //else
+        //{
+        //    checkbox = static_cast<ToggleButton*>(existingComponentToUpdate);
+        //}
+
+        //checkbox->setToggleState(importedFiles[rowNum].shouldDelete, dontSendNotification);
+        //return checkbox;
+
+    }
+
+    if (columnId == 5 || columnId == 6)
+    {
+        int deckNum = (columnId == 5 ? 1 : 2);
         auto* btn = static_cast<TextButton*>(existingComponentToUpdate);
 
         if (btn == nullptr)
