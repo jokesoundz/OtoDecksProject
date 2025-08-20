@@ -22,7 +22,7 @@ timeDisplay(formatManagerToUse, cacheToUse)
 
     addAndMakeVisible(playPauseButton);
     addAndMakeVisible(cueButton);
-    addAndMakeVisible(loadButton);
+    //addAndMakeVisible(loadButton);
        
     addAndMakeVisible(volSlider);
     addAndMakeVisible(speedSlider);
@@ -36,7 +36,7 @@ timeDisplay(formatManagerToUse, cacheToUse)
 
     playPauseButton.addListener(this);
     cueButton.addListener(this);
-    loadButton.addListener(this);
+    //loadButton.addListener(this);
 
     volSlider.addListener(this);
     speedSlider.addListener(this);
@@ -101,10 +101,10 @@ void DeckGUI::resized()
     timeDisplay.setBounds(0, rowH * 3, getWidth(), rowH);
 
     playPauseButton.setBounds(0, rowH *4, getWidth(), rowH);
-    //cueButton.setBounds(0, rowH *4, getWidth(), rowH);
-    volSlider.setBounds(border, rowH * 5, getWidth() - border, rowH);
-    speedSlider.setBounds(border, rowH * 6, getWidth() - border, rowH);
-    loadButton.setBounds(0, rowH * 7, getWidth(), rowH);
+    cueButton.setBounds(0, rowH *5, getWidth(), rowH);
+    volSlider.setBounds(border, rowH * 6, getWidth() - border, rowH);
+    speedSlider.setBounds(border, rowH * 7, getWidth() - border, rowH);
+    //loadButton.setBounds(0, rowH * 7, getWidth(), rowH);
 
 }
 
@@ -123,20 +123,20 @@ void DeckGUI::buttonClicked(Button* button)
     //    player->stop();
 
     //}
-    if (button == &loadButton)
-    {
-       //auto fileChooserFlags = 
-       // FileBrowserComponent::canSelectFiles;
-       // fChooser.launchAsync(fileChooserFlags, [this](const FileChooser& chooser)
-       // {
-       //     File chosenFile = chooser.getResult();
-       //     if (chosenFile.exists()){
-       //         player->loadURL(URL{chooser.getResult()});
-       //         waveformDisplay.loadURL(URL{chooser.getResult()});
-       //     }
-       // })
-       return;
-    }
+    //if (button == &loadButton)
+    //{
+    //   auto fileChooserFlags = 
+    //    FileBrowserComponent::canSelectFiles;
+    //    fChooser.launchAsync(fileChooserFlags, [this](const FileChooser& chooser)
+    //    {
+    //        File chosenFile = chooser.getResult();
+    //        if (chosenFile.exists()){
+    //            player->loadURL(URL{chooser.getResult()});
+    //            waveformDisplay.loadURL(URL{chooser.getResult()});
+    //        }
+    //    })
+    //   return;
+    //}
 }
 
 void DeckGUI::sliderValueChanged (Slider *slider)

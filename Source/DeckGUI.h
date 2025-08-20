@@ -55,7 +55,7 @@ private:
     TextButton playPauseButton{"PLAY"}; //initialise to PLAY
     //TextButton stopButton{"STOP"};
     TextButton cueButton{ "CUE" }; //TODO: various 'cue' functionalty
-    TextButton loadButton{"LOAD"}; //will load highlighted track from library to relevant deck component
+    //TextButton loadButton{"LOAD"}; //will load highlighted track from library to relevant deck component
   
     Slider volSlider; 
     Slider speedSlider;

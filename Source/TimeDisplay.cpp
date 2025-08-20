@@ -56,7 +56,7 @@ void TimeDisplay::paint (juce::Graphics& g)
     }
     else
     {
-        g.drawText("Time Remaining = -0:00 || Elapsed Time = 0:00", getLocalBounds(),
+        g.drawText("Time Remaining: -0:00   Elapsed Time: 0:00", getLocalBounds(),
             juce::Justification::centred, true);
     }
 

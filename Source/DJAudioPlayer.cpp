@@ -53,7 +53,8 @@ void DJAudioPlayer::setGain(double gain)
     {
         std::cout << "DJAudioPlayer::setGain gain should be between 0 and 1" << std::endl;
     }
-    else {
+    else
+    {
         transportSource.setGain(gain);
     }
    
