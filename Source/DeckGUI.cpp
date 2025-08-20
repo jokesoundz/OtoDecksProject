@@ -158,6 +158,26 @@ void DeckGUI::sliderValueChanged (Slider *slider)
     
 }
 
+void DeckGUI::sliderDragStarted(Slider* slider)
+{
+    if (slider == &posSlider)
+    {
+        wasPlayingAlready = player->isPlaying();
+        if (wasPlayingAlready)
+        {
+            player->togglePlayPause();
+        }
+    }
+}
+
+void DeckGUI::sliderDragEnded(Slider* slider)
+{
+    if (slider == &posSlider && wasPlayingAlready)
+    {
+        player->togglePlayPause();
+    }
+}
+
 bool DeckGUI::isInterestedInFileDrag (const StringArray &files)
 {
     std::cout << "DeckGUI::isInterestedInFileDrag" << std::endl;

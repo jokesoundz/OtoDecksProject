@@ -39,7 +39,9 @@ public:
     void updatePlayPauseButton();
 
     /** implement Slider::Listener */
-    void sliderValueChanged (Slider *slider) override;
+    void sliderValueChanged (Slider* slider) override;
+    void sliderDragStarted(Slider* slider) override;
+    void sliderDragEnded(Slider* slider) override;
 
     bool isInterestedInFileDrag (const StringArray &files) override;
     void filesDropped (const StringArray &files, int x, int y) override; 
@@ -58,6 +60,7 @@ private:
     Slider volSlider; 
     Slider speedSlider;
     Slider posSlider;
+    bool wasPlayingAlready = false;
 
     Label volLabel; //volume-gain
     Label speedLabel; //speed-tempo-adjust
