@@ -161,7 +161,7 @@ Component* PlaylistComponent::refreshComponentForCell(
     //tableComponent.getHeader().setColumnWidth(1, 25); //disables changes to column 1 (delete checkbox column)
 
 
-    if (columnId == 1)
+    if (columnId == 1) //delete/ remove track from library column TODO: ticks are sticky, needs fixing.. JUCE is creating new toggle buttons?? multiple times(?)
     {
         auto* checkbox = new ToggleButton();
         checkbox->setClickingTogglesState(true);
