@@ -15,15 +15,24 @@
 //==============================================================================
 /*
 */
-class TimeDisplay  : public juce::Component
+class TimeDisplay  : public juce::Component,
+                     public ChangeListener
 {
 public:
-    TimeDisplay();
+    TimeDisplay(AudioFormatManager& formatManagerToUse,
+                AudioThumbnailCache& cacheToUse);
     ~TimeDisplay() override;
 
     void paint (juce::Graphics&) override;
     void resized() override;
 
+    void changeListenerCallback(ChangeBroadcaster* source) override;
+
+    void loadURL(URL audioURL);
+
 private:
-    JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (TimeDisplay)
+    JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(TimeDisplay)
+
+    AudioThumbnail audioThumb;
+    bool fileLoaded;
 };

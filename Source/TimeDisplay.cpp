@@ -12,10 +12,13 @@
 #include "TimeDisplay.h"
 
 //==============================================================================
-TimeDisplay::TimeDisplay()
+TimeDisplay::TimeDisplay(AudioFormatManager& formatManagerToUse,
+                         AudioThumbnailCache& cacheToUse) :
+                         audioThumb(1000, formatManagerToUse, cacheToUse),
+                         fileLoaded(false),
 {
-    // In your constructor, you should add any child components, and
-    // initialise any special settings that your component needs.
+
+    audioThumb.addChangeListener(this);
 
 }
 
@@ -35,17 +38,42 @@ void TimeDisplay::paint (juce::Graphics& g)
     g.fillAll (getLookAndFeel().findColour (juce::ResizableWindow::backgroundColourId));   // clear the background
 
     g.setColour (juce::Colours::grey);
-    g.drawRect (getLocalBounds(), 1);   // draw an outline around the component
+    g.drawRect (getLocalBounds(), 1);
+    g.setColour(juce::Colours::black);
+    g.fillRect(getLocalBounds());
 
-    g.setColour (juce::Colours::white);
+    g.setColour (juce::Colours::darkorange);
     g.setFont (juce::FontOptions (14.0f));
-    g.drawText ("TimeDisplay", getLocalBounds(),
-                juce::Justification::centred, true);   // draw some placeholder text
+    g.drawText ("Time Remaining = -0:00 || Elapsed Time = 0:00", getLocalBounds(),
+                juce::Justification::centred, true);
 }
 
 void TimeDisplay::resized()
 {
     // This method is where you should set the bounds of any child
     // components that your component contains..
+
+}
+
+void TimeDisplay::loadURL(URL audioURL)
+{
+    audioThumb.clear();
+    fileLoaded = audioThumb.setSource(new URLInputSource(audioURL));
+    if (fileLoaded)
+    {
+        std::cout << "TimeDisplay: loaded! " << std::endl;
+        repaint();
+    }
+    else {
+        std::cout << "TimeDisplay: not loaded! " << std::endl;
+    }
+
+}
+
+void TimeDisplay::changeListenerCallback(ChangeBroadcaster* source)
+{
+    std::cout << "TimeDisplay: change received! " << std::endl;
+
+    repaint();
 
 }

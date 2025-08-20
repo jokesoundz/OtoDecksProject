@@ -13,6 +13,7 @@
 #include "../JuceLibraryCode/JuceHeader.h"
 #include "DJAudioPlayer.h"
 #include "WaveformDisplay.h"
+#include "TimeDisplay.h"
 
 //==============================================================================
 /*
@@ -62,6 +63,8 @@ private:
     Label speedLabel; //speed-tempo-adjust
 
     WaveformDisplay waveformDisplay;
+
+    TimeDisplay timeDisplay;
 
     DJAudioPlayer* player; 
 

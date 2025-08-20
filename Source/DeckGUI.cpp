@@ -28,6 +28,7 @@ DeckGUI::DeckGUI(DJAudioPlayer* _player,
     addAndMakeVisible(posSlider);
 
     addAndMakeVisible(waveformDisplay);
+    addAndMakeVisible(timeDisplay);
 
     addAndMakeVisible(speedLabel);
     addAndMakeVisible(volLabel);
@@ -96,9 +97,10 @@ void DeckGUI::resized()
     waveformDisplay.setBounds(waveformBorder, 0, getWidth() - waveformBorder * 2, rowH * 2);
     posSlider.setBounds(0, rowH * 2, getWidth(), rowH);
     posSlider.setTextBoxStyle(juce::Slider::NoTextBox, false, 0, 0);
+    timeDisplay.setBounds(0, rowH * 3, getWidth(), rowH);
 
-    playPauseButton.setBounds(0, rowH *3, getWidth(), rowH);
-    cueButton.setBounds(0, rowH *4, getWidth(), rowH);  
+    playPauseButton.setBounds(0, rowH *4, getWidth(), rowH);
+    //cueButton.setBounds(0, rowH *4, getWidth(), rowH);
     volSlider.setBounds(border, rowH * 5, getWidth() - border, rowH);
     speedSlider.setBounds(border, rowH * 6, getWidth() - border, rowH);
     loadButton.setBounds(0, rowH * 7, getWidth(), rowH);

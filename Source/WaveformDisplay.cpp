@@ -19,10 +19,7 @@ WaveformDisplay::WaveformDisplay(AudioFormatManager & 	formatManagerToUse,
                                  position(0)
                           
 {
-    // In your constructor, you should add any child components, and
-    // initialise any special settings that your component needs.
-
-  audioThumb.addChangeListener(this);
+    audioThumb.addChangeListener(this);
 }
 
 WaveformDisplay::~WaveformDisplay()
@@ -31,12 +28,6 @@ WaveformDisplay::~WaveformDisplay()
 
 void WaveformDisplay::paint (Graphics& g)
 {
-    /* This demo code just fills the component's background and
-       draws some placeholder text to get you started.
-
-       You should replace everything in this method with your own
-       drawing code..
-    */
 
     g.fillAll (getLookAndFeel().findColour (ResizableWindow::backgroundColourId));   // clear the background
 
@@ -62,7 +53,6 @@ void WaveformDisplay::paint (Graphics& g)
         g.setFont (20.0f);
         g.drawText ("File not loaded...", getLocalBounds(),
                     Justification::centred, true);   // draw some placeholder text
-
     }
 }
 
@@ -70,7 +60,6 @@ void WaveformDisplay::resized()
 {
     // This method is where you should set the bounds of any child
     // components that your component contains..
-
 }
 
 void WaveformDisplay::loadURL(URL audioURL)
