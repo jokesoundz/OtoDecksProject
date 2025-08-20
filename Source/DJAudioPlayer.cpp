@@ -130,3 +130,13 @@ double DJAudioPlayer::getPositionRelative()
     double length = getLengthInSeconds();
     return length > 0.0 ? getCurrentPosition() / length : 0.0; //avoid division by zero
 }
+
+void DJAudioPlayer::setCuePoint()
+{
+    cuePoint = transportSource.getCurrentPosition();
+}
+
+void DJAudioPlayer::jumpToCuePoint()
+{
+    transportSource.setPosition(cuePoint);
+}

@@ -44,9 +44,17 @@ void WaveformDisplay::paint (Graphics& g)
                                 0, 
                                 1.0f
                                 );
+        
+        // current position line
         g.setColour(Colours::lightgreen);
-        //g.drawRect(position * getWidth(), 0, getWidth() / 20, getHeight());
         g.drawRect(position * getWidth() - 1, 0, 2, getHeight());
+
+        // cue point line
+        if (cuePosition >= 0.0)
+        {
+            g.setColour(Colours::blue);
+            g.drawRect(cuePosition * getWidth() - 1, 0, 2, getHeight());
+        }
     }
     else 
     {
@@ -92,6 +100,12 @@ void WaveformDisplay::setPositionRelative(double pos)
         position = pos;
         repaint();
     }
+}
+
+void WaveformDisplay::setCuePointRelative(double pos)
+{
+    cuePosition = pos;
+    repaint();
 }
 
 

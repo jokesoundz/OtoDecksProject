@@ -38,12 +38,16 @@ class DJAudioPlayer : public AudioSource {
     double getCurrentPosition() const;
     double getLengthInSeconds() const;
 
+    void setCuePoint();
+    void jumpToCuePoint();
+
 private:
     AudioFormatManager& formatManager;
     std::unique_ptr<AudioFormatReaderSource> readerSource;
     AudioTransportSource transportSource; 
     ResamplingAudioSource resampleSource{&transportSource, false, 2};
 
+    double cuePoint = 0.0;
 };
 
 

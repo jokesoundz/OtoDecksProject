@@ -33,10 +33,13 @@ public:
     /** set the relative position of the playhead*/
     void setPositionRelative(double pos);
 
+    void setCuePointRelative(double pos);
+
 private:
     AudioThumbnail audioThumb;
     bool fileLoaded; 
     double position;
+    double cuePosition = -1.0; //initialise to impossible value
     
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (WaveformDisplay)
 };

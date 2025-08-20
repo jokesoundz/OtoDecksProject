@@ -18,11 +18,12 @@
 //==============================================================================
 /*
 */
-class DeckGUI    : public Component,
-                   public Button::Listener, 
-                   public Slider::Listener, 
-                   public FileDragAndDropTarget, 
-                   public Timer
+class DeckGUI : public Component,
+                public Button::Listener,
+                public Slider::Listener,
+                public MouseListener,
+                public FileDragAndDropTarget, 
+                public Timer
 {
 public:
     DeckGUI(DJAudioPlayer* player, 
@@ -34,7 +35,11 @@ public:
     void resized() override;
 
      /** implement Button::Listener */
-    void buttonClicked (Button *) override;
+    void buttonClicked (Button * button) override;
+    //void buttonStateChanged(Button* button) override; //caused problems with hover
+
+    void mouseDown(const MouseEvent& event) override;
+    void mouseUp(const MouseEvent& event) override;
 
     void updatePlayPauseButton();
 
@@ -49,6 +54,7 @@ public:
 
     void timerCallback() override; 
 
+
 private:
     //juce::FileChooser fChooser{"Select a file..."};
 
@@ -56,11 +62,12 @@ private:
     //TextButton stopButton{"STOP"};
     TextButton cueButton{ "CUE" }; //TODO: various 'cue' functionalty
     //TextButton loadButton{"LOAD"}; //will load highlighted track from library to relevant deck component
-  
+    bool cuePreviewActive = false; //flag for cue button mousepressed
+
     Slider volSlider; 
     Slider speedSlider;
     Slider posSlider;
-    bool wasPlayingAlready = false;
+    bool wasPlayingAlready = false; //checks state of player ONLY - and updates accordingly
 
     Label volLabel; //volume-gain
     Label speedLabel; //speed-tempo-adjust

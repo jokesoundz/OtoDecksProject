@@ -36,6 +36,7 @@ timeDisplay(formatManagerToUse, cacheToUse)
 
     playPauseButton.addListener(this);
     cueButton.addListener(this);
+    cueButton.addMouseListener(this, false); //for press and hold interaction
     //loadButton.addListener(this);
 
     volSlider.addListener(this);
@@ -137,7 +138,72 @@ void DeckGUI::buttonClicked(Button* button)
     //    })
     //   return;
     //}
+    if (button == &cueButton && !cuePreviewActive)
+    {
+        if (player->isPlaying())
+        {
+            player->setCuePoint(); //sets new cuepoint while playing
+
+            double cueTime = player->getCurrentPosition();
+            double trackLength = player->getLengthInSeconds();
+            double cueRelative = cueTime / trackLength;
+
+            waveformDisplay.setCuePointRelative(cueRelative);
+        }
+        else
+        {
+            player->jumpToCuePoint(); //jumps to current cue point while not playing
+        }
+    }
 }
+
+void DeckGUI::mouseDown(const MouseEvent& event)
+{
+    if (event.eventComponent == &cueButton)
+    {
+        wasPlayingAlready = player->isPlaying();
+        if (!wasPlayingAlready)
+        {
+            cuePreviewActive = true;
+            player->jumpToCuePoint();
+            player->togglePlayPause();
+        }
+    }
+}
+
+void DeckGUI::mouseUp(const MouseEvent& event)
+{
+    if (event.eventComponent == &cueButton)
+    {
+        if (!wasPlayingAlready)
+        {
+            player->togglePlayPause();
+        }
+
+        if (cuePreviewActive)
+        {
+            player->jumpToCuePoint();
+        }
+        cuePreviewActive = false;
+    }
+}
+
+//void DeckGUI::buttonStateChanged(Button* button)
+//{
+//    if (button == &cueButton)
+//    {
+//        if (cueButton.isDown())
+//        {
+//            player->jumpToCuePoint();
+//            player->togglePlayPause();
+//        }
+//        else
+//        {
+//            player->togglePlayPause();
+//        }
+//    }
+//}
+
 
 void DeckGUI::sliderValueChanged (Slider *slider)
 {
