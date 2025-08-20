@@ -175,6 +175,10 @@ void DeckGUI::filesDropped (const StringArray &files, int x, int y)
 
 void DeckGUI::timerCallback()
 {
+    double current = player->getCurrentPosition();
+    double total = player->getLengthInSeconds();
+
+    timeDisplay.updateTime(current, total);
     //std::cout << "DeckGUI::timerCallback" << std::endl;
     waveformDisplay.setPositionRelative(
             player->getPositionRelative());

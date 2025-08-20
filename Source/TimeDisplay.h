@@ -30,9 +30,15 @@ public:
 
     void loadURL(URL audioURL);
 
+    void updateTime(double currentSeconds, double totalSeconds);
+
 private:
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(TimeDisplay)
 
     AudioThumbnail audioThumb;
     bool fileLoaded;
+    double currentTime = 0.0;
+    double totalTime = 0.0;
+
+    String formatSeconds(double seconds) const;
 };

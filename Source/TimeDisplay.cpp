@@ -41,14 +41,21 @@ void TimeDisplay::paint (juce::Graphics& g)
     g.fillRect(getLocalBounds());
 
     g.setColour(juce::Colours::darkorange);
+    g.setFont(juce::FontOptions(14.0f));
+
     if (fileLoaded)
     {
-        double trackDurationSeconds = audioThumb.getTotalLength();
-        g.drawText(std::to_string(trackDurationSeconds), getLocalBounds(), Justification::centred, true); //TODO: CONVERT DOUBLE TO STRING!!!
+        //double trackDurationSeconds = audioThumb.getTotalLength();
+        //g.drawText(std::to_string(trackDurationSeconds), getLocalBounds(), Justification::centred, true); //TODO: CONVERT DOUBLE TO STRING!!!
+
+        String elapsed = formatSeconds(currentTime);
+        String remaining = formatSeconds(totalTime - currentTime);
+
+        g.drawText("Remaining: -" + remaining + "   Elapsed: " + elapsed,
+                    getLocalBounds(), Justification::centred, true);
     }
     else
     {
-        g.setFont(juce::FontOptions(14.0f));
         g.drawText("Time Remaining = -0:00 || Elapsed Time = 0:00", getLocalBounds(),
             juce::Justification::centred, true);
     }
@@ -69,11 +76,11 @@ void TimeDisplay::loadURL(URL audioURL)
     fileLoaded = audioThumb.setSource(new URLInputSource(audioURL));
     if (fileLoaded)
     {
-        std::cout << "TimeDisplay: loaded! " << std::endl;
+        std::cout << "TimeDisplay: track loaded! " << std::endl;
         repaint();
     }
     else {
-        std::cout << "TimeDisplay: not loaded! " << std::endl;
+        std::cout << "TimeDisplay: track not loaded! " << std::endl;
     }
 
 }
@@ -84,4 +91,20 @@ void TimeDisplay::changeListenerCallback(ChangeBroadcaster* source)
 
     repaint();
 
+}
+
+void TimeDisplay::updateTime(double currentSeconds, double totalSeconds)
+{
+    currentTime = currentSeconds;
+    totalTime = totalSeconds;
+
+    repaint();
+}
+
+
+String TimeDisplay::formatSeconds(double seconds) const
+{
+    int mins = int(seconds) / 60;
+    int secs = int(seconds) % 60;
+    return String(mins) + ":" + String(secs).paddedLeft('0', 2);
 }
