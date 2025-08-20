@@ -15,11 +15,9 @@
 TimeDisplay::TimeDisplay(AudioFormatManager& formatManagerToUse,
                          AudioThumbnailCache& cacheToUse) :
                          audioThumb(1000, formatManagerToUse, cacheToUse),
-                         fileLoaded(false),
+                         fileLoaded(false)
 {
-
     audioThumb.addChangeListener(this);
-
 }
 
 TimeDisplay::~TimeDisplay()
@@ -42,10 +40,20 @@ void TimeDisplay::paint (juce::Graphics& g)
     g.setColour(juce::Colours::black);
     g.fillRect(getLocalBounds());
 
-    g.setColour (juce::Colours::darkorange);
-    g.setFont (juce::FontOptions (14.0f));
-    g.drawText ("Time Remaining = -0:00 || Elapsed Time = 0:00", getLocalBounds(),
-                juce::Justification::centred, true);
+    g.setColour(juce::Colours::darkorange);
+    if (fileLoaded)
+    {
+        double trackDurationSeconds = audioThumb.getTotalLength();
+        g.drawText(std::to_string(trackDurationSeconds), getLocalBounds(), Justification::centred, true); //TODO: CONVERT DOUBLE TO STRING!!!
+    }
+    else
+    {
+        g.setFont(juce::FontOptions(14.0f));
+        g.drawText("Time Remaining = -0:00 || Elapsed Time = 0:00", getLocalBounds(),
+            juce::Justification::centred, true);
+    }
+
+
 }
 
 void TimeDisplay::resized()

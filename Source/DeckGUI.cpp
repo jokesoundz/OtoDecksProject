@@ -12,11 +12,12 @@
 #include "DeckGUI.h"
 
 //==============================================================================
-DeckGUI::DeckGUI(DJAudioPlayer* _player, 
-                AudioFormatManager & 	formatManagerToUse,
-                AudioThumbnailCache & 	cacheToUse
-           ) : player(_player), 
-               waveformDisplay(formatManagerToUse, cacheToUse)
+DeckGUI::DeckGUI(DJAudioPlayer* _player,
+    AudioFormatManager& formatManagerToUse,
+    AudioThumbnailCache& cacheToUse
+) : player(_player),
+waveformDisplay(formatManagerToUse, cacheToUse),
+timeDisplay(formatManagerToUse, cacheToUse)
 {
 
     addAndMakeVisible(playPauseButton);
@@ -202,5 +203,6 @@ void DeckGUI::loadFile(const File& file)
 {
     player->loadURL(URL{file});
     waveformDisplay.loadURL(URL{file});
+    timeDisplay.loadURL(URL{ file });
     updatePlayPauseButton();
 }

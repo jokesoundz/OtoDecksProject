@@ -15,7 +15,7 @@
 //==============================================================================
 /*
 */
-class TimeDisplay  : public juce::Component,
+class TimeDisplay  : public Component,
                      public ChangeListener
 {
 public:
