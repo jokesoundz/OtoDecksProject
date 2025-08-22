@@ -11,13 +11,13 @@
             file="Source/WaveformDisplay.h"/>
       <FILE id="mY8mBE" name="DeckGUI.cpp" compile="1" resource="0" file="Source/DeckGUI.cpp"/>
       <FILE id="pXoLBs" name="DeckGUI.h" compile="0" resource="0" file="Source/DeckGUI.h"/>
-      <FILE id="A9iWIL" name="PlaylistComponent.cpp" compile="1" resource="0"
-            file="Source/PlaylistComponent.cpp"/>
-      <FILE id="zqmMAl" name="PlaylistComponent.h" compile="0" resource="0"
-            file="Source/PlaylistComponent.h"/>
       <FILE id="TIQiuh" name="DJAudioPlayer.cpp" compile="1" resource="0"
             file="Source/DJAudioPlayer.cpp"/>
       <FILE id="aVDLxo" name="DJAudioPlayer.h" compile="0" resource="0" file="Source/DJAudioPlayer.h"/>
+      <FILE id="C9Bxo3" name="LibraryComponent.cpp" compile="1" resource="0"
+            file="Source/LibraryComponent.cpp"/>
+      <FILE id="Iw7rBu" name="LibraryComponent.h" compile="0" resource="0"
+            file="Source/LibraryComponent.h"/>
       <FILE id="nBjnc1" name="MainComponent.h" compile="0" resource="0" file="Source/MainComponent.h"/>
       <FILE id="OJ0Xrs" name="MainComponent.cpp" compile="1" resource="0"
             file="Source/MainComponent.cpp"/>
