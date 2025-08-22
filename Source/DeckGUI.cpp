@@ -19,11 +19,25 @@ DeckGUI::DeckGUI(DJAudioPlayer* _player,
 waveformDisplay(formatManagerToUse, cacheToUse),
 timeDisplay(formatManagerToUse, cacheToUse)
 {
+    setupUI();
+    setupSliders();
+    setupLabels();
+    setupListeners();
+    setupTimer();
+}
 
+DeckGUI::~DeckGUI()
+{
+    stopTimer();
+}
+
+//==============================================================================
+
+void DeckGUI::setupUI()
+{
     addAndMakeVisible(playPauseButton);
     addAndMakeVisible(cueButton);
-    //addAndMakeVisible(loadButton);
-       
+
     addAndMakeVisible(volSlider);
     addAndMakeVisible(speedSlider);
     addAndMakeVisible(posSlider);
@@ -33,60 +47,59 @@ timeDisplay(formatManagerToUse, cacheToUse)
 
     addAndMakeVisible(speedLabel);
     addAndMakeVisible(volLabel);
+}
 
-    playPauseButton.addListener(this);
-    cueButton.addListener(this);
-    cueButton.addMouseListener(this, false); //for press and hold interaction
-    //loadButton.addListener(this);
-
-    volSlider.addListener(this);
-    speedSlider.addListener(this);
-    posSlider.addListener(this);
-
-
-    volSlider.setRange(0.0, 1.0);
-    speedSlider.setRange(0.0, 10.0);
+void DeckGUI::setupSliders()
+{
     posSlider.setRange(0.0, 1.0);
-
+    
+    volSlider.setRange(0.0, 1.0);
     volSlider.setValue(0.7); //ensures slider position (for volume) is set to 70% at start of app
+
+    speedSlider.setRange(0.0, 10.0);
     speedSlider.setValue(1.0); //ensures sliderposition is set to default bpm at start of app
-
     speedSlider.setSkewFactorFromMidPoint(1.0); //makes tempo slider more intuitive
+}
 
+void DeckGUI::setupLabels()
+{
     volLabel.setText("Gain", dontSendNotification);
     volLabel.attachToComponent(&volSlider, true);
 
     speedLabel.setText("Speed adjust", dontSendNotification);
     speedLabel.attachToComponent(&speedSlider, true);
-
-    startTimer(20); //TODO: check this doesn't cause lag, was originally 500
-
-
 }
 
-DeckGUI::~DeckGUI()
+void DeckGUI::setupListeners()
 {
-    stopTimer();
+    playPauseButton.addListener(this);
+    cueButton.addListener(this);
+    cueButton.addMouseListener(this, false); //for press and hold interaction
+
+    volSlider.addListener(this);
+    speedSlider.addListener(this);
+    posSlider.addListener(this);
 }
+
+void DeckGUI::setupTimer()
+{
+    startTimer(20); //TODO: check this doesn't cause lag, was originally 500
+}
+
+//==============================================================================
 
 void DeckGUI::paint (Graphics& g)
 {
-    /* This demo code just fills the component's background and
-       draws some placeholder text to get you started.
 
-       You should replace everything in this method with your own
-       drawing code..
-    */
-
-    g.fillAll (getLookAndFeel().findColour (ResizableWindow::backgroundColourId));   // clear the background
+    g.fillAll (getLookAndFeel().findColour (ResizableWindow::backgroundColourId));
 
     g.setColour (Colours::grey);
-    g.drawRect (getLocalBounds(), 1);   // draw an outline around the component
+    g.drawRect (getLocalBounds(), 1);
 
     g.setColour (Colours::white);
     g.setFont (14.0f);
     g.drawText ("DeckGUI", getLocalBounds(),
-                Justification::centred, true);   // draw some placeholder text
+                Justification::centred, true);
 }
 
 void DeckGUI::resized()
@@ -105,8 +118,6 @@ void DeckGUI::resized()
     cueButton.setBounds(0, rowH *5, getWidth(), rowH);
     volSlider.setBounds(border, rowH * 6, getWidth() - border, rowH);
     speedSlider.setBounds(border, rowH * 7, getWidth() - border, rowH);
-    //loadButton.setBounds(0, rowH * 7, getWidth(), rowH);
-
 }
 
 void DeckGUI::buttonClicked(Button* button)
@@ -115,29 +126,9 @@ void DeckGUI::buttonClicked(Button* button)
     {
         std::cout << "Play/Pause button was clicked " << std::endl;
         player->togglePlayPause();
-        //player->start();
         updatePlayPauseButton();
     }
-    // if (button == &stopButton)
-    //{
-    //    std::cout << "Stop button was clicked " << std::endl;
-    //    player->stop();
 
-    //}
-    //if (button == &loadButton)
-    //{
-    //   auto fileChooserFlags = 
-    //    FileBrowserComponent::canSelectFiles;
-    //    fChooser.launchAsync(fileChooserFlags, [this](const FileChooser& chooser)
-    //    {
-    //        File chosenFile = chooser.getResult();
-    //        if (chosenFile.exists()){
-    //            player->loadURL(URL{chooser.getResult()});
-    //            waveformDisplay.loadURL(URL{chooser.getResult()});
-    //        }
-    //    })
-    //   return;
-    //}
     if (button == &cueButton && !cuePreviewActive)
     {
         if (player->isPlaying())
@@ -187,22 +178,6 @@ void DeckGUI::mouseUp(const MouseEvent& event)
         cuePreviewActive = false;
     }
 }
-
-//void DeckGUI::buttonStateChanged(Button* button)
-//{
-//    if (button == &cueButton)
-//    {
-//        if (cueButton.isDown())
-//        {
-//            player->jumpToCuePoint();
-//            player->togglePlayPause();
-//        }
-//        else
-//        {
-//            player->togglePlayPause();
-//        }
-//    }
-//}
 
 
 void DeckGUI::sliderValueChanged (Slider *slider)
