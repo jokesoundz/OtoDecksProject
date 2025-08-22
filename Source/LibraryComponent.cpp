@@ -214,14 +214,27 @@ void LibraryComponent::buttonClicked(Button* button)
         auto fileChooserFlags = FileBrowserComponent::canSelectFiles |
                                 FileBrowserComponent::canSelectMultipleItems;
         fChooser.launchAsync(fileChooserFlags, [this](const FileChooser& chooser)
-        {
-            //auto chosenFiles = chooser.getResults();
-            for (const auto& file : chooser.getResults())
             {
-                if (file.existsAsFile())
+                //auto chosenFiles = chooser.getResults();
+                for (const auto& file : chooser.getResults())
                 {
-                    trackTitles.push_back(file.getFileName().toStdString());
-                    importedFiles.push_back(file);
+                    if (file.existsAsFile())
+                    {
+                        trackTitles.push_back(file.getFileName().toStdString());
+                        importedFiles.push_back(file);
+
+
+                        ////////////////////////////////////////////////////////////////////////////////////////////////////////
+                        //TESTING TOKENIZER IN TRACKINFO CLASS TODO: fix everything here to allow title/ artist guess to happen
+
+                        TrackInfo track(file); //turns file to TrackInfo type
+                        //DBG("Imported: " + track.getFileName());
+                        DBG("Parsed Title: " + track.getTitle()); //should give back 'title' using tokeniser
+                        DBG("Parsed Artist: " + track.getArtist()); //should attempt to get 'artist' using tokeniser or return (unknown) if can't guess
+
+                        // these infos should be parsed into table in appropriate columns
+                        // later we will also store this info using 'value tree'
+                        ////////////////////////////////////////////////////////////////////////////////////////////////////
                 }
 
             }
