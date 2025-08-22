@@ -36,7 +36,6 @@ void LibraryComponent::setupUI()
     tableHeaderLabel.setJustificationType(Justification::centredLeft);
 
     importButton.setButtonText("Import File(s)...");
-
 }
 
 void LibraryComponent::setupTable()

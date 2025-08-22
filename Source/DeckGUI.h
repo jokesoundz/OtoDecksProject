@@ -27,8 +27,8 @@ class DeckGUI : public Component,
 {
 public:
     DeckGUI(DJAudioPlayer* player, 
-           AudioFormatManager & 	formatManagerToUse,
-           AudioThumbnailCache & 	cacheToUse );
+            AudioFormatManager& formatManagerToUse,
+            AudioThumbnailCache& cacheToUse );
     ~DeckGUI();
 
     void paint (Graphics&) override;
@@ -36,7 +36,6 @@ public:
 
      /** implement Button::Listener */
     void buttonClicked (Button * button) override;
-    //void buttonStateChanged(Button* button) override; //caused problems with hover
 
     void mouseDown(const MouseEvent& event) override;
     void mouseUp(const MouseEvent& event) override;
@@ -58,10 +57,15 @@ public:
 private:
     //juce::FileChooser fChooser{"Select a file..."};
 
+    void setupUI();
+    void setupSliders();
+    void setupLabels();
+    void setupListeners();
+    void setupTimer();
+
     TextButton playPauseButton{"PLAY"}; //initialise to PLAY
-    //TextButton stopButton{"STOP"};
-    TextButton cueButton{ "CUE" }; //TODO: various 'cue' functionalty
-    //TextButton loadButton{"LOAD"}; //will load highlighted track from library to relevant deck component
+    TextButton cueButton{ "CUE" };
+
     bool cuePreviewActive = false; //flag for cue button mousepressed
 
     Slider volSlider; 
