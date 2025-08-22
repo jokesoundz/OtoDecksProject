@@ -24,7 +24,6 @@ PlaylistComponent::PlaylistComponent()
     
     tableComponent.getHeader().addColumn("del", 1, 30);
     //tableComponent.getHeader().setColumnVisible(1, true);
-    !tableComponent.getHeader().resizable;
 
     tableComponent.getHeader().addColumn("Track", 2, 150);
     tableComponent.getHeader().addColumn("Artist", 3, 150);
@@ -235,9 +234,9 @@ void PlaylistComponent::buttonClicked(Button* button)
             tableComponent.updateContent();
         });
     }
-    else
-    {
-        int id = std::stoi(button->getComponentID().toStdString());
-        DBG("PlaylistComponent::buttonClicked " << trackTitles[id]);
-    }
+    //else
+    //{
+    //    int id = std::stoi(button->getComponentID().toStdString());
+    //    DBG("PlaylistComponent::buttonClicked " << trackTitles[id]);
+    //}
 }

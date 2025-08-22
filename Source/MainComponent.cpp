@@ -11,36 +11,54 @@
 //==============================================================================
 MainComponent::MainComponent()
 {
-    // Make sure you set the size of the component after
-    // you add any child components.
     setSize (800, 600);
 
-    // Some platforms require permissions to open input channels so request that here
-    if (RuntimePermissions::isRequired (RuntimePermissions::recordAudio)
-        && ! RuntimePermissions::isGranted (RuntimePermissions::recordAudio))
+    setupAudio();
+    setupUI();
+    setupCallbacks();
+
+    formatManager.registerBasicFormats();
+}
+
+MainComponent::~MainComponent()
+{
+    // This shuts down the audio device and clears the audio source.
+    shutdownAudio();
+}
+
+//==============================================================================
+
+void MainComponent::setupAudio()
+{
+    if (RuntimePermissions::isRequired(RuntimePermissions::recordAudio)
+        && !RuntimePermissions::isGranted(RuntimePermissions::recordAudio))
     {
-        RuntimePermissions::request (RuntimePermissions::recordAudio,
-                                     [&] (bool granted) { if (granted)  setAudioChannels (2, 2); });
-    }  
+        RuntimePermissions::request(RuntimePermissions::recordAudio,
+            [&](bool granted) { if (granted)  setAudioChannels(2, 2); });
+    }
     else
     {
-        // Specify the number of input and output channels that we want to open
-        setAudioChannels (0, 2);
-    }  
+        setAudioChannels(0, 2);
+    }
+}
 
-    addAndMakeVisible(deckGUI1); 
+void MainComponent::setupUI()
+{
+    addAndMakeVisible(deckGUI1);
     addAndMakeVisible(deckGUI2);
-    
-	addAndMakeVisible(playlistComponent);
+    addAndMakeVisible(playlistComponent);
+}
 
+void MainComponent::setupCallbacks()
+{
     playlistComponent.onLoadToDeck = [this](int row, int deckNum)
     {
-        if (row < 0 || row >= (int)playlistComponent.getNumFiles())
+        if (row < 0 || row >= (int)playlistComponent.getNumImportedFiles())
         {
             return;
         }
 
-        auto fileToLoad = playlistComponent.getFileAt(row);
+        auto fileToLoad = playlistComponent.getImportedFileAt(row);
         if (deckNum == 1)
         {
             deckGUI1.loadFile(fileToLoad);
@@ -51,14 +69,6 @@ MainComponent::MainComponent()
             deckGUI2.loadFile(fileToLoad);
         }
     };
-
-    formatManager.registerBasicFormats();
-}
-
-MainComponent::~MainComponent()
-{
-    // This shuts down the audio device and clears the audio source.
-    shutdownAudio();
 }
 
 //==============================================================================
@@ -92,10 +102,7 @@ void MainComponent::releaseResources()
 //==============================================================================
 void MainComponent::paint (Graphics& g)
 {
-    // (Our component is opaque, so we must completely fill the background with a solid colour)
     g.fillAll (getLookAndFeel().findColour (ResizableWindow::backgroundColourId));
-
-    // You can add your drawing code here!
 }
 
 void MainComponent::resized()

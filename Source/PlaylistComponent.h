@@ -50,12 +50,12 @@ public:
     /** row = which rack, deck = 1 or 2 */
     std::function<void(int row, int deck)> onLoadToDeck;
 
-    int getNumFiles() const noexcept
+    int getNumImportedFiles() const noexcept
     {
         return importedFiles.size();
     }
 
-    File getFileAt(int index) const
+    File getImportedFileAt(int index) const
     {
         jassert(index >= 0 && index < importedFiles.size());
         return importedFiles[index];
