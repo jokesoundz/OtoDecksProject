@@ -1,7 +1,7 @@
 /*
   ==============================================================================
 
-    PlaylistComponent.h
+    LibraryComponent.h
     Created: 14 Aug 2025 2:06:02pm
     Author:  PC
 
@@ -15,13 +15,13 @@
 //==============================================================================
 /*
 */
-class PlaylistComponent  : public juce::Component,
+class LibraryComponent  : public juce::Component,
                            public TableListBoxModel,
                            public Button::Listener
 {
 public:
-    PlaylistComponent();
-    ~PlaylistComponent() override;
+    LibraryComponent();
+    ~LibraryComponent() override;
 
     void paint (juce::Graphics&) override;
     void resized() override;
@@ -63,7 +63,12 @@ public:
 
 
 private:
-    JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (PlaylistComponent)
+    JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(LibraryComponent)
+
+
+    void setupUI();
+    void setupTable();
+    void setupCallbacks();
 
     FileChooser fChooser{ "Select a file..." ,
                             File::getSpecialLocation(File::userHomeDirectory),

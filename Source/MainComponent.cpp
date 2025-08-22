@@ -46,19 +46,19 @@ void MainComponent::setupUI()
 {
     addAndMakeVisible(deckGUI1);
     addAndMakeVisible(deckGUI2);
-    addAndMakeVisible(playlistComponent);
+    addAndMakeVisible(libraryComponent);
 }
 
 void MainComponent::setupCallbacks()
 {
-    playlistComponent.onLoadToDeck = [this](int row, int deckNum)
+    libraryComponent.onLoadToDeck = [this](int row, int deckNum)
     {
-        if (row < 0 || row >= (int)playlistComponent.getNumImportedFiles())
+        if (row < 0 || row >= (int)libraryComponent.getNumImportedFiles())
         {
             return;
         }
 
-        auto fileToLoad = playlistComponent.getImportedFileAt(row);
+        auto fileToLoad = libraryComponent.getImportedFileAt(row);
         if (deckNum == 1)
         {
             deckGUI1.loadFile(fileToLoad);
@@ -110,6 +110,6 @@ void MainComponent::resized()
     deckGUI1.setBounds(0, 0, getWidth()/2, getHeight()/ 2);
     deckGUI2.setBounds(getWidth()/2, 0, getWidth()/2, getHeight()/ 2);
 
-    playlistComponent.setBounds(0, getHeight() / 2, getWidth(), getHeight() / 2);
+    libraryComponent.setBounds(0, getHeight() / 2, getWidth(), getHeight() / 2);
 }
 

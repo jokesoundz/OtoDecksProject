@@ -11,7 +11,7 @@
 #include "../JuceLibraryCode/JuceHeader.h"
 #include "DJAudioPlayer.h"
 #include "DeckGUI.h"
-#include "PlaylistComponent.h"
+#include "LibraryComponent.h"
 
 
 //==============================================================================
@@ -36,8 +36,10 @@ public:
     void resized() override;
 
 private:
-    //==============================================================================
-    // Your private member variables go here...
+
+    void setupAudio();
+    void setupUI();
+    void setupCallbacks();
      
     AudioFormatManager formatManager;
     AudioThumbnailCache thumbCache{100}; 
@@ -50,7 +52,7 @@ private:
 
     MixerAudioSource mixerSource; 
 
-	PlaylistComponent playlistComponent;
+	LibraryComponent libraryComponent;
     
     
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (MainComponent)

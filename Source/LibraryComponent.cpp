@@ -1,7 +1,7 @@
 /*
   ==============================================================================
 
-    PlaylistComponent.cpp
+    LibraryComponent.cpp
     Created: 14 Aug 2025 2:06:02pm
     Author:  PC
 
@@ -9,57 +9,58 @@
 */
 
 #include <JuceHeader.h>
-#include "PlaylistComponent.h"
+#include "LibraryComponent.h"
 
 //==============================================================================
-PlaylistComponent::PlaylistComponent()
+LibraryComponent::LibraryComponent()
 {
-    // In your constructor, you should add any child components, and
-    // initialise any special settings that your component needs.
+    setupUI();
+    setupTable();
+    setupCallbacks();
+}
 
-	addAndMakeVisible(tableComponent);
+LibraryComponent::~LibraryComponent()
+{
+}
+
+//==============================================================================
+
+void LibraryComponent::setupUI()
+{
+    addAndMakeVisible(tableComponent);
     addAndMakeVisible(tableHeaderLabel);
     addAndMakeVisible(importButton);
-
-    
-    tableComponent.getHeader().addColumn("del", 1, 30);
-    //tableComponent.getHeader().setColumnVisible(1, true);
-
-    tableComponent.getHeader().addColumn("Track", 2, 150);
-    tableComponent.getHeader().addColumn("Artist", 3, 150);
-    tableComponent.getHeader().addColumn("Length", 4, 70);
-    tableComponent.getHeader().addColumn("", 5, 100);
-    tableComponent.getHeader().addColumn("", 6, 100);
-
-
-    tableComponent.setModel(this);
-
-    //trackTitles.push_back("Track 1");
-    //trackTitles.push_back("Track 2");
-    //trackTitles.push_back("Track 3");
-    //trackTitles.push_back("Track 4");
 
     tableHeaderLabel.setText("Tracks Library", dontSendNotification);
     tableHeaderLabel.setFont(Font(16.0f, Font::bold));
     tableHeaderLabel.setJustificationType(Justification::centredLeft);
 
     importButton.setButtonText("Import File(s)...");
+
+}
+
+void LibraryComponent::setupTable()
+{
+    tableComponent.getHeader().addColumn("del", 1, 30);
+    tableComponent.getHeader().addColumn("Track", 2, 150);
+    tableComponent.getHeader().addColumn("Artist", 3, 150);
+    tableComponent.getHeader().addColumn("Length", 4, 70);
+    tableComponent.getHeader().addColumn("", 5, 100);
+    tableComponent.getHeader().addColumn("", 6, 100);
+
+    tableComponent.setModel(this);
+}
+
+void LibraryComponent::setupCallbacks()
+{
     importButton.addListener(this);
-
 }
 
-PlaylistComponent::~PlaylistComponent()
-{
-}
+//==============================================================================
 
-void PlaylistComponent::paint (juce::Graphics& g)
-{
-    /* This demo code just fills the component's background and
-       draws some placeholder text to get you started.
 
-       You should replace everything in this method with your own
-       drawing code..
-    */
+void LibraryComponent::paint (juce::Graphics& g)
+{
 
     g.fillAll (getLookAndFeel().findColour (juce::ResizableWindow::backgroundColourId));   // clear the background
 
@@ -68,14 +69,12 @@ void PlaylistComponent::paint (juce::Graphics& g)
 
     g.setColour (juce::Colours::white);
     g.setFont (juce::FontOptions (14.0f));
-    g.drawText ("PlaylistComponent", getLocalBounds(),
+    g.drawText ("LibraryComponent", getLocalBounds(),
                 juce::Justification::centred, true);   // draw some placeholder text
 }
 
-void PlaylistComponent::resized()
+void LibraryComponent::resized()
 {
-    // This method is where you should set the bounds of any child
-    // components that your component contains..
 
     const int headerArea = 40;
 
@@ -83,15 +82,14 @@ void PlaylistComponent::resized()
     importButton.setBounds(getWidth() - 120, 0, 120, headerArea);
 
     tableComponent.setBounds(0, headerArea, getWidth(), getHeight());
-
 }
 
-int PlaylistComponent::getNumRows()
+int LibraryComponent::getNumRows()
 {
     return trackTitles.size();
 }
 
-void PlaylistComponent::paintRowBackground(Graphics& g,
+void LibraryComponent::paintRowBackground(Graphics& g,
                                             int rowNumber,
                                             int width,
                                             int height,
@@ -107,7 +105,7 @@ void PlaylistComponent::paintRowBackground(Graphics& g,
     }
 }
 
-void PlaylistComponent::paintCell(Graphics& g,
+void LibraryComponent::paintCell(Graphics& g,
                                     int rowNumber,
                                     int columnId,
                                     int width,
@@ -121,12 +119,12 @@ void PlaylistComponent::paintCell(Graphics& g,
         true);
 }
 
-void PlaylistComponent::cellClicked(int rowNumber, int columnId, const MouseEvent&)
+void LibraryComponent::cellClicked(int rowNumber, int columnId, const MouseEvent&)
 {
-    DBG("PlaylistComponent::cellClicked Row: " << rowNumber << ", Column: " << columnId);
+    DBG("LibraryComponent::cellClicked Row: " << rowNumber << ", Column: " << columnId);
 }
 
-Component* PlaylistComponent::refreshComponentForCell(
+Component* LibraryComponent::refreshComponentForCell(
     int rowNum,
     int columnId,
     bool isRowSelected,
@@ -210,10 +208,8 @@ Component* PlaylistComponent::refreshComponentForCell(
     return existingComponentToUpdate;
 }
 
-void PlaylistComponent::buttonClicked(Button* button)
+void LibraryComponent::buttonClicked(Button* button)
 {
-
-
     if (button == &importButton)
     {
         auto fileChooserFlags = FileBrowserComponent::canSelectFiles |
@@ -234,9 +230,4 @@ void PlaylistComponent::buttonClicked(Button* button)
             tableComponent.updateContent();
         });
     }
-    //else
-    //{
-    //    int id = std::stoi(button->getComponentID().toStdString());
-    //    DBG("PlaylistComponent::buttonClicked " << trackTitles[id]);
-    //}
 }
