@@ -38,7 +38,24 @@ void TrackInfo::parseFilename()
     StringArray tokens;
     tokens.addTokens(filename, "-", "");
 
-    if (tokens.size() >= 2)
+    if (tokens.size() > 2)
+    {
+        String firstToken = tokens[0].trim();
+        bool startsWithNumber = firstToken.retainCharacters("0123456789").length() == firstToken.length();
+
+        title = tokens[tokens.size() - 1].trim();
+
+        //if (startsWithNumber && tokens.size() >= 3)
+        if (startsWithNumber)
+        {
+            artist = tokens[1].trim();
+        }
+        else
+        {
+            artist = tokens[0].trim();
+        }
+    }
+    else if (tokens.size() == 2)
     {
         title = tokens[tokens.size() - 1].trim();
         artist = tokens[0].trim();

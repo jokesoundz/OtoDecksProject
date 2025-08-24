@@ -41,7 +41,7 @@ void LibraryComponent::setupUI()
 void LibraryComponent::setupTable()
 {
     tableComponent.getHeader().addColumn("del", 1, 30);
-    tableComponent.getHeader().addColumn("Track", 2, 150);
+    tableComponent.getHeader().addColumn("Track Title", 2, 150);
     tableComponent.getHeader().addColumn("Artist", 3, 150);
     tableComponent.getHeader().addColumn("Length", 4, 70);
     tableComponent.getHeader().addColumn("", 5, 100);
@@ -85,7 +85,8 @@ void LibraryComponent::resized()
 
 int LibraryComponent::getNumRows()
 {
-    return trackTitles.size();
+    //return trackTitles.size();
+    return static_cast<int>(trackInfos.size());
 }
 
 void LibraryComponent::paintRowBackground(Graphics& g,
@@ -111,11 +112,35 @@ void LibraryComponent::paintCell(Graphics& g,
                                     int height,
                                     bool rowIsSelected)
 {
-    g.drawText(trackTitles[rowNumber],
-        2, 0,
-        width - 4, height,
-        Justification::centredLeft,
-        true);
+    //g.drawText(trackTitles[rowNumber],
+    //    2, 0,
+    //    width - 4, height,
+    //    Justification::centredLeft,
+    //    true);
+
+    if (rowNumber >= trackInfos.size())
+    {
+        return;
+    }
+
+    String text;
+
+    if (columnId == 2)
+    {
+        text = trackInfos[rowNumber].getTitle();
+    }
+    else if (columnId == 3)
+    {
+        text = trackInfos[rowNumber].getArtist();
+    }
+    else if (columnId == 4)
+    {
+        text = "";
+    }
+
+    g.setColour(Colours::white);
+    g.setFont(14.0f);
+    g.drawText(text, 2, 0, width - 4, height, Justification::centredLeft, true);
 }
 
 void LibraryComponent::cellClicked(int rowNumber, int columnId, const MouseEvent&)
@@ -185,6 +210,7 @@ Component* LibraryComponent::refreshComponentForCell(
 
     }
 
+
     if (columnId == 5 || columnId == 6)
     {
         int deckNum = (columnId == 5 ? 1 : 2);
@@ -220,17 +246,21 @@ void LibraryComponent::buttonClicked(Button* button)
                 {
                     if (file.existsAsFile())
                     {
-                        trackTitles.push_back(file.getFileName().toStdString());
-                        importedFiles.push_back(file);
+                        //trackTitles.push_back(file.getFileName().toStdString());
+
+                        TrackInfo track(file);
+                        trackInfos.push_back(track); //stores track info, e.g. tracktitle, artist, if filename is structured in typical way, using TrackInfo class tokenizer
+
+                        importedFiles.push_back(file); //stores file info for accessing correctly on loadtodeck
 
 
                         ////////////////////////////////////////////////////////////////////////////////////////////////////////
                         //TESTING TOKENIZER IN TRACKINFO CLASS TODO: fix everything here to allow title/ artist guess to happen
 
-                        TrackInfo track(file); //turns file to TrackInfo type
+                        //TrackInfo track(file); //turns file to TrackInfo type
                         //DBG("Imported: " + track.getFileName());
-                        DBG("Parsed Title: " + track.getTitle()); //should give back 'title' using tokeniser
-                        DBG("Parsed Artist: " + track.getArtist()); //should attempt to get 'artist' using tokeniser or return (unknown) if can't guess
+                        //DBG("Parsed Title: " + track.getTitle()); //should give back 'title' using tokeniser
+                        //DBG("Parsed Artist: " + track.getArtist()); //should attempt to get 'artist' using tokeniser or return (unknown) if can't guess
 
                         // these infos should be parsed into table in appropriate columns
                         // later we will also store this info using 'value tree'

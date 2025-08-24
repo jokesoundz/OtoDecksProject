@@ -78,8 +78,9 @@ private:
                             };
 
 	TableListBox tableComponent;
-    std::vector<std::string> trackTitles;
+    //std::vector<std::string> trackTitles;
     Label tableHeaderLabel;
     TextButton importButton; //button for importing files from computer
     std::vector<File> importedFiles;
+    std::vector<TrackInfo> trackInfos;
 };
