@@ -59,14 +59,15 @@ void MainComponent::setupCallbacks()
         }
 
         auto fileToLoad = libraryComponent.getImportedFileAt(row);
+        auto trackInfo = libraryComponent.getTrackInfoAt(row);
         if (deckNum == 1)
         {
-            deckGUI1.loadFile(fileToLoad);
+            deckGUI1.loadFile(fileToLoad, trackInfo);
         }
 
         else if (deckNum == 2)
         {
-            deckGUI2.loadFile(fileToLoad);
+            deckGUI2.loadFile(fileToLoad, trackInfo);
         }
     };
 }

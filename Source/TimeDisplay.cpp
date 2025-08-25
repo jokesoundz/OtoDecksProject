@@ -13,7 +13,8 @@
 
 //==============================================================================
 TimeDisplay::TimeDisplay(AudioFormatManager& formatManagerToUse,
-                         AudioThumbnailCache& cacheToUse) :
+                         AudioThumbnailCache& cacheToUse)
+                         :
                          audioThumb(1000, formatManagerToUse, cacheToUse),
                          fileLoaded(false)
 {

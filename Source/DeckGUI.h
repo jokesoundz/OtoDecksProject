@@ -3,7 +3,7 @@
 
     DeckGUI.h
     Created: 13 Mar 2020 6:44:48pm
-    Author:  matthew
+    Author:  matthew & joe
 
   ==============================================================================
 */
@@ -14,6 +14,7 @@
 #include "DJAudioPlayer.h"
 #include "WaveformDisplay.h"
 #include "TimeDisplay.h"
+#include "TrackInfoDisplay.h"
 
 //==============================================================================
 /*
@@ -49,7 +50,7 @@ public:
 
     bool isInterestedInFileDrag (const StringArray &files) override;
     void filesDropped (const StringArray &files, int x, int y) override; 
-    void loadFile(const File& file);
+    void loadFile(const File& file, const TrackInfo& trackInfo);
 
     void timerCallback() override; 
 
@@ -79,6 +80,7 @@ private:
     WaveformDisplay waveformDisplay;
 
     TimeDisplay timeDisplay;
+    TrackInfoDisplay trackInfoDisplay;
 
     DJAudioPlayer* player; 
 

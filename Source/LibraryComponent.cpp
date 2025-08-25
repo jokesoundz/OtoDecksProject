@@ -273,3 +273,8 @@ void LibraryComponent::buttonClicked(Button* button)
         });
     }
 }
+
+TrackInfo LibraryComponent::getTrackInfoAt(int index) const
+{
+    return trackInfos[index];
+}

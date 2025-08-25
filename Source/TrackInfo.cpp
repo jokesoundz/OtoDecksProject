@@ -37,6 +37,7 @@ void TrackInfo::parseFilename()
     String filename = file.getFileNameWithoutExtension();
     StringArray tokens;
     tokens.addTokens(filename, "-", "");
+    tokens.trim();
 
     if (tokens.size() > 2)
     {

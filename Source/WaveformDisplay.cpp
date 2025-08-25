@@ -3,7 +3,7 @@
 
     WaveformDisplay.cpp
     Created: 14 Mar 2020 3:50:16pm
-    Author:  matthew
+    Author:  matthew & joe
 
   ==============================================================================
 */

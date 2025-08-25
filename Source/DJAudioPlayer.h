@@ -3,7 +3,7 @@
 
     DJAudioPlayer.h
     Created: 13 Mar 2020 4:22:22pm
-    Author:  matthew
+    Author:  matthew & joe
 
   ==============================================================================
 */

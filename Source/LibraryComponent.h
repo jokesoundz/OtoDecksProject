@@ -17,8 +17,8 @@
 /*
 */
 class LibraryComponent  : public juce::Component,
-                           public TableListBoxModel,
-                           public Button::Listener
+                          public TableListBoxModel,
+                          public Button::Listener
 {
 public:
     LibraryComponent();
@@ -61,6 +61,8 @@ public:
         jassert(index >= 0 && index < importedFiles.size());
         return importedFiles[index];
     }
+
+    TrackInfo getTrackInfoAt(int index) const;
 
 
 private:

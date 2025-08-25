@@ -3,7 +3,7 @@
 
     DeckGUI.cpp
     Created: 13 Mar 2020 6:44:48pm
-    Author:  matthew
+    Author:  matthew & joe
 
   ==============================================================================
 */
@@ -16,8 +16,8 @@ DeckGUI::DeckGUI(DJAudioPlayer* _player,
     AudioFormatManager& formatManagerToUse,
     AudioThumbnailCache& cacheToUse
 ) : player(_player),
-waveformDisplay(formatManagerToUse, cacheToUse),
-timeDisplay(formatManagerToUse, cacheToUse)
+    waveformDisplay(formatManagerToUse, cacheToUse),
+    timeDisplay(formatManagerToUse, cacheToUse)
 {
     setupUI();
     setupSliders();
@@ -39,14 +39,16 @@ void DeckGUI::setupUI()
     addAndMakeVisible(cueButton);
 
     addAndMakeVisible(volSlider);
+    addAndMakeVisible(volLabel);
+
     addAndMakeVisible(speedSlider);
+    addAndMakeVisible(speedLabel);
+
+    addAndMakeVisible(timeDisplay);
+    addAndMakeVisible(trackInfoDisplay);
+    addAndMakeVisible(waveformDisplay);
     addAndMakeVisible(posSlider);
 
-    addAndMakeVisible(waveformDisplay);
-    addAndMakeVisible(timeDisplay);
-
-    addAndMakeVisible(speedLabel);
-    addAndMakeVisible(volLabel);
 }
 
 void DeckGUI::setupSliders()
@@ -109,8 +111,9 @@ void DeckGUI::resized()
     const int border = 120;
     const int waveformBorder = 10;
 
-    waveformDisplay.setBounds(waveformBorder, 0, getWidth() - waveformBorder * 2, rowH * 2);
-    posSlider.setBounds(0, rowH * 2, getWidth(), rowH);
+    trackInfoDisplay.setBounds(0, 0, getWidth(), rowH);
+    waveformDisplay.setBounds(waveformBorder, rowH, getWidth() - waveformBorder * 2, rowH * 2);
+    posSlider.setBounds(0, rowH * 2.5, getWidth(), rowH);
     posSlider.setTextBoxStyle(juce::Slider::NoTextBox, false, 0, 0);
     timeDisplay.setBounds(0, rowH * 3, getWidth(), rowH);
 
@@ -264,10 +267,11 @@ void DeckGUI::updatePlayPauseButton()
     }
 }
 
-void DeckGUI::loadFile(const File& file)
+void DeckGUI::loadFile(const File& file, const TrackInfo& trackInfo)
 {
     player->loadURL(URL{file});
     waveformDisplay.loadURL(URL{file});
     timeDisplay.loadURL(URL{ file });
+    trackInfoDisplay.setTrackInfo(trackInfo);
     updatePlayPauseButton();
 }
