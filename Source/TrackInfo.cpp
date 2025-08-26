@@ -36,34 +36,25 @@ void TrackInfo::parseFilename()
 {
     String filename = file.getFileNameWithoutExtension();
     StringArray tokens;
-    tokens.addTokens(filename, "-", "");
+    tokens.addTokens(filename, "-.", "");
     tokens.trim();
 
-    if (tokens.size() > 2)
-    {
-        String firstToken = tokens[0].trim();
-        bool startsWithNumber = firstToken.retainCharacters("0123456789").length() == firstToken.length();
+    String firstToken = tokens[0].trim();
+    bool startsWithNumber = firstToken.retainCharacters("0123456789").length() == firstToken.length();
 
-        title = tokens[tokens.size() - 1].trim();
-
-        //if (startsWithNumber && tokens.size() >= 3)
-        if (startsWithNumber)
-        {
-            artist = tokens[1].trim();
-        }
-        else
-        {
-            artist = tokens[0].trim();
-        }
-    }
-    else if (tokens.size() == 2)
+    // typical filenames include:
+    // "# - artist - title" || "# - title" || "#. artist - title" || #. title" || "artist - title" || "title"
+    // tokenizer attempts to guess 'artist' and 'title' or write 'title' twice but avoid writing numbers
+    // NOTE: tokenizer cannot split on "emptyspace" or notice "-" in "artist-name" so some errors will occur on file import
+    if (startsWithNumber && tokens.size() >= 2)
     {
         title = tokens[tokens.size() - 1].trim();
-        artist = tokens[0].trim();
+        artist = tokens[1];
     }
     else
     {
-        title = filename;
-        artist = "(unknown)";
+        title = tokens[tokens.size() - 1].trim();
+        artist = tokens[0];
     }
+
 }
