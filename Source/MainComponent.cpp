@@ -10,6 +10,7 @@
 
 //==============================================================================
 MainComponent::MainComponent()
+    : libraryComponent(&trackLibrary)
 {
     setSize (800, 600);
 
@@ -114,3 +115,16 @@ void MainComponent::resized()
     libraryComponent.setBounds(0, getHeight() / 2, getWidth(), getHeight() / 2);
 }
 
+void MainComponent::loadLibraryFromDisk()
+{
+    File saveFile = File::getSpecialLocation(File::userApplicationDataDirectory).getChildFile("trackLibrary.xml");
+
+    trackLibrary.loadFromDisk(saveFile);
+}
+
+void MainComponent::saveLibraryToDisk()
+{
+    File saveFile = File::getSpecialLocation(File::userApplicationDataDirectory).getChildFile("trackLibrary.xml");
+
+    trackLibrary.saveToDisk(saveFile);
+}

@@ -35,6 +35,9 @@ public:
     void paint (Graphics& g) override;
     void resized() override;
 
+    void loadLibraryFromDisk();
+    void saveLibraryToDisk();
+
 private:
 
     void setupAudio();
@@ -52,7 +55,8 @@ private:
 
     MixerAudioSource mixerSource; 
 
-	LibraryComponent libraryComponent;
+    TrackLibrary trackLibrary;
+    LibraryComponent libraryComponent{ &trackLibrary };
     
     
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (MainComponent)

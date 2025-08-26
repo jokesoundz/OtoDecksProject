@@ -27,13 +27,30 @@ public:
         // This method is where you should put your application's initialisation code..
 
         mainWindow.reset (new MainWindow (getApplicationName()));
+
+        //JT CODE HERE////////////////////
+        if (auto* mainComp = mainWindow->getMainComponent())
+        {
+            mainComp->loadLibraryFromDisk();
+        }
     }
 
     void shutdown() override
     {
         // Add your application's shutdown code here..
 
-        mainWindow = nullptr; // (deletes our window)
+        //JT CODE HERE////////////////////
+        if (mainWindow != nullptr)
+        {
+            if (auto* mainComp = mainWindow->getMainComponent())
+            {
+                mainComp->saveLibraryToDisk();
+            }
+
+            mainWindow = nullptr; // (deletes our window)
+        }
+
+
     }
 
     //==============================================================================
@@ -65,6 +82,9 @@ public:
                                                     DocumentWindow::allButtons)
         {
             setUsingNativeTitleBar (true);
+
+
+
             setContentOwned (new MainComponent(), true);
 
            #if JUCE_IOS || JUCE_ANDROID
@@ -91,8 +111,12 @@ public:
            you really have to override any DocumentWindow methods, make sure your
            subclass also calls the superclass's method.
         */
+        MainComponent* getMainComponent() const { return mainComponent; }
 
     private:
+
+        MainComponent* mainComponent = nullptr;
+
         JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (MainWindow)
     };
 

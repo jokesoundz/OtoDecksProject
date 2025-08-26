@@ -12,6 +12,7 @@
 
 #include <JuceHeader.h>
 #include "TrackInfo.h"
+#include "TrackLibrary.h"
 
 //==============================================================================
 /*
@@ -22,7 +23,7 @@ class LibraryComponent  : public juce::Component,
                           //,public TableHeaderComponent::Listener
 {
 public:
-    LibraryComponent();
+    LibraryComponent(TrackLibrary* libraryPtr);
     ~LibraryComponent() override;
 
     void paint (juce::Graphics&) override;
@@ -89,4 +90,6 @@ private:
     TextButton importButton; //button for importing files from computer
     std::vector<File> importedFiles;
     std::vector<TrackInfo> trackInfos;
+
+    TrackLibrary* trackLibrary = nullptr;
 };
