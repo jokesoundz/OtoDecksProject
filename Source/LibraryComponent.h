@@ -19,6 +19,7 @@
 class LibraryComponent  : public juce::Component,
                           public TableListBoxModel,
                           public Button::Listener
+                          //,public TableHeaderComponent::Listener
 {
 public:
     LibraryComponent();
@@ -64,6 +65,9 @@ public:
 
     TrackInfo getTrackInfoAt(int index) const;
 
+    //void tableColumnsChanged(TableHeaderComponent* tableHeader) override;
+    //void tableColumnsResized(TableHeaderComponent* tableHeader) override;
+    //void tableSortOrderChanged(TableHeaderComponent* tableHeader) override;
 
 private:
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(LibraryComponent)

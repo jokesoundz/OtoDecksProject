@@ -53,6 +53,7 @@ void LibraryComponent::setupTable()
 void LibraryComponent::setupCallbacks()
 {
     importButton.addListener(this);
+    //tableComponent.getHeader().addListener(this);
 }
 
 //==============================================================================
