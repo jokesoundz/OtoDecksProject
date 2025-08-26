@@ -83,9 +83,9 @@ public:
         {
             setUsingNativeTitleBar (true);
 
+            mainComponent = new MainComponent();
 
-
-            setContentOwned (new MainComponent(), true);
+            setContentOwned (mainComponent, true);
 
            #if JUCE_IOS || JUCE_ANDROID
             setFullScreen (true);
