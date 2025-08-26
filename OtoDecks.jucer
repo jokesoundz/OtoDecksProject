@@ -3,6 +3,9 @@
 <JUCERPROJECT id="sQfdmN" name="OtoDecks" projectType="guiapp" jucerFormatVersion="1">
   <MAINGROUP id="mcJZqF" name="OtoDecks">
     <GROUP id="{356C603F-01E1-55B2-02A0-F2D89D9A59E6}" name="Source">
+      <FILE id="fy00Jq" name="TrackLibrary.cpp" compile="1" resource="0"
+            file="Source/TrackLibrary.cpp"/>
+      <FILE id="OH19x5" name="TrackLibrary.h" compile="0" resource="0" file="Source/TrackLibrary.h"/>
       <FILE id="x3t9ik" name="TrackInfoDisplay.cpp" compile="1" resource="0"
             file="Source/TrackInfoDisplay.cpp"/>
       <FILE id="iMw3yZ" name="TrackInfoDisplay.h" compile="0" resource="0"
