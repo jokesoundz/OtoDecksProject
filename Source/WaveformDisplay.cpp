@@ -34,6 +34,9 @@ void WaveformDisplay::paint (Graphics& g)
     g.setColour (Colours::grey);
     g.drawRect (getLocalBounds(), 1);   // draw an outline around the component
 
+    //g.setColour(juce::Colours::black);
+    //g.fillRect(getLocalBounds());
+
     g.setColour (Colours::orange);
     if(fileLoaded)
     {

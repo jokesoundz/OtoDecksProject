@@ -43,8 +43,10 @@ void TrackInfoDisplay::paint (juce::Graphics& g)
 
     g.setColour(juce::Colours::grey);
     g.drawRect(getLocalBounds(), 1);
-    //g.setColour(juce::Colours::black);
-    //g.fillRect(getLocalBounds());
+
+    //background of title/ artist info
+    g.setColour(juce::Colours::black);
+    g.fillRect(getLocalBounds());
 
     //g.setColour(juce::Colours::darkorange);
     //g.setFont(juce::FontOptions(14.0f));

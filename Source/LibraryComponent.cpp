@@ -221,7 +221,7 @@ Component* LibraryComponent::refreshComponentForCell(
                 };
         }
 
-        if (rowNum < trackInfos.size())
+        if (rowNum < trackInfos.size()) //import trackInfo for each track upon file import
         {
             String currentText;
 
