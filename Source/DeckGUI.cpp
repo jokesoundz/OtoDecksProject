@@ -85,7 +85,7 @@ void DeckGUI::setupListeners()
 
 void DeckGUI::setupTimer()
 {
-    startTimer(20); //TODO: check this doesn't cause lag, was originally 500
+    startTimer(50); //TODO: check this doesn't cause lag, was originally 500
 }
 
 //==============================================================================
