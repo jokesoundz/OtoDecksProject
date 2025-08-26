@@ -139,33 +139,6 @@ Component* LibraryComponent::refreshComponentForCell(
     bool isRowSelected,
     Component* existingComponentToUpdate)
 {
-    //if (columnId == 2)
-    //{
-    //    if (existingComponentToUpdate == nullptr)
-    //    {
-    //        TextButton * btn = new TextButton("load to deck 1");
-    //        btn->addListener(this);
-    //        String id{ std::to_string(rowNumber) };
-    //        btn->setComponentID(id);
-
-    //        existingComponentToUpdate = btn;
-    //    }
-    //}
-    //else if (columnId == 3)
-    //{
-    //    if (existingComponentToUpdate == nullptr)
-    //    {
-    //        TextButton* btn = new TextButton("load to deck 2");
-    //        btn->addListener(this);
-    //        String id{ std::to_string(rowNumber) };
-    //        btn->setComponentID(id);
-
-    //        existingComponentToUpdate = btn;
-    //    }
-    //}
-
-    //tableComponent.getHeader().setColumnWidth(1, 25); //disables changes to column 1 (delete checkbox column)
-
 
     if (columnId == 1) //delete/ remove track from library column TODO: ticks are sticky, needs fixing.. JUCE is creating new toggle buttons?? multiple times(?)
     {
@@ -271,35 +244,25 @@ void LibraryComponent::buttonClicked(Button* button)
         auto fileChooserFlags = FileBrowserComponent::canSelectFiles |
                                 FileBrowserComponent::canSelectMultipleItems;
         fChooser.launchAsync(fileChooserFlags, [this](const FileChooser& chooser)
+        {
+            //auto chosenFiles = chooser.getResults();
+            for (const auto& file : chooser.getResults())
             {
-                //auto chosenFiles = chooser.getResults();
-                for (const auto& file : chooser.getResults())
+                if (file.existsAsFile())
                 {
-                    if (file.existsAsFile())
-                    {
-                        //trackTitles.push_back(file.getFileName().toStdString());
+                    TrackInfo track(file);
 
-                        TrackInfo track(file);
-                        trackInfos.push_back(track); //stores track info, e.g. tracktitle, artist, if filename is structured in typical way, using TrackInfo class tokenizer
+                    trackLibrary->addTrack(track);
 
-                        importedFiles.push_back(file); //stores file info for accessing correctly on loadtodeck
+                    //trackInfos.push_back(track); //stores track info, e.g. tracktitle, artist, if filename is structured in typical way, using TrackInfo class tokenizer
 
+                    importedFiles.push_back(file); //stores file info for accessing correctly on loadtodeck
 
-                        ////////////////////////////////////////////////////////////////////////////////////////////////////////
-                        //TESTING TOKENIZER IN TRACKINFO CLASS TODO: fix everything here to allow title/ artist guess to happen
-
-                        //TrackInfo track(file); //turns file to TrackInfo type
-                        //DBG("Imported: " + track.getFileName());
-                        //DBG("Parsed Title: " + track.getTitle()); //should give back 'title' using tokeniser
-                        //DBG("Parsed Artist: " + track.getArtist()); //should attempt to get 'artist' using tokeniser or return (unknown) if can't guess
-
-                        // these infos should be parsed into table in appropriate columns
-                        // later we will also store this info using 'value tree'
-                        ////////////////////////////////////////////////////////////////////////////////////////////////////
                 }
 
             }
             
+            trackInfos = trackLibrary->getTracks();
             tableComponent.updateContent();
         });
     }
@@ -308,4 +271,11 @@ void LibraryComponent::buttonClicked(Button* button)
 TrackInfo LibraryComponent::getTrackInfoAt(int index) const
 {
     return trackInfos[index];
+}
+
+void LibraryComponent::refreshFromLibrary()
+{
+    trackInfos = trackLibrary->getTracks();
+    tableComponent.updateContent();
+    tableComponent.repaint();
 }

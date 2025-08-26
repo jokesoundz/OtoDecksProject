@@ -31,12 +31,36 @@ void TrackLibrary::addTrack(const TrackInfo& track)
 
 void TrackLibrary::saveToDisk(const File& file)
 {
+    Logger::outputDebugString("TrackLibrary::saveToDisk called");
+    Logger::outputDebugString("Saving to: " + file.getFullPathName());
+    Logger::outputDebugString("Num tracks being saved: " + String(libraryTree.getNumChildren()));
+
     FileOutputStream stream(file);
     if (stream.openedOk())
     {
         libraryTree.writeToStream(stream);
     }
+    else
+    {
+        Logger::outputDebugString("Failed to open file for writing");
+    }
 }
+
+//void TrackLibrary::saveToDisk(const File& file)
+//{
+//    Logger::outputDebugString("TrackLibrary::saveToDisk called");
+//    Logger::outputDebugString("Saving to: " + file.getFullPathName());
+//    Logger::outputDebugString("Num tracks being saved: " + String(libraryTree.getNumChildren()));
+//
+//    if (auto xml = libraryTree.createXml())
+//    {
+//        xml->writeToFile(file, {});
+//    }
+//    else
+//    {
+//        Logger::outputDebugString("Failed to open file for writing");
+//    }
+//}
 
 void TrackLibrary::loadFromDisk(const File& file)
 {
@@ -49,6 +73,14 @@ void TrackLibrary::loadFromDisk(const File& file)
     if (stream.openedOk())
     {
         auto loadedTree = ValueTree::readFromStream(stream);
+
+        DBG("TrackLibrary::LoadFromDisk called");
+        DBG("File exists: " + file.existsAsFile());
+        DBG("Loaded tree is valid: " + loadedTree.isValid());
+        DBG("Loaded tree type: " << loadedTree.getType().toString());
+        DBG("Num children: " << loadedTree.getNumChildren());
+
+
         if (loadedTree.isValid() && loadedTree.hasType("Library"))
         {
             libraryTree = loadedTree;
@@ -56,6 +88,32 @@ void TrackLibrary::loadFromDisk(const File& file)
         }
     }
 }
+
+//void TrackLibrary::loadFromDisk(const File& file)
+//{
+//    Logger::outputDebugString("TrackLibrary::loadFromDisk called");
+//    Logger::outputDebugString("Loading from: " + file.getFullPathName());
+//
+//    if (!file.existsAsFile())
+//    {
+//        Logger::outputDebugString("File does not exist");
+//        return;
+//    }
+//
+//    auto xml = XmlDocument(file).getDocumentElement();
+//    if (xml != nullptr)
+//    {
+//        auto tree = ValueTree::fromXml(*xml);
+//        Logger::outputDebugString("Loaded tree from: " + tree.getType().toString());
+//        Logger::outputDebugString("Num children: " + String(tree.getNumChildren()));
+//
+//        if (tree.isValid() && tree.hasType("Library"))
+//        {
+//            libraryTree = tree;
+//            rebuildVectorFromTree();
+//        }
+//    }
+//}
 
 void TrackLibrary::rebuildVectorFromTree()
 {

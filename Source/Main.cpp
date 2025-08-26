@@ -25,6 +25,7 @@ public:
     void initialise (const String& commandLine) override
     {
         // This method is where you should put your application's initialisation code..
+        DBG("Main shutdown triggered - saving library");
 
         mainWindow.reset (new MainWindow (getApplicationName()));
 
@@ -38,7 +39,7 @@ public:
     void shutdown() override
     {
         // Add your application's shutdown code here..
-
+        DBG("Main shutdown triggered - saving library");
         //JT CODE HERE////////////////////
         if (mainWindow != nullptr)
         {

@@ -19,6 +19,8 @@ MainComponent::MainComponent()
     setupCallbacks();
 
     formatManager.registerBasicFormats();
+
+    loadLibraryFromDisk();
 }
 
 MainComponent::~MainComponent()
@@ -120,11 +122,19 @@ void MainComponent::loadLibraryFromDisk()
     File saveFile = File::getSpecialLocation(File::userApplicationDataDirectory).getChildFile("trackLibrary.xml");
 
     trackLibrary.loadFromDisk(saveFile);
+
+    DBG("MainComponent::loadLibraryFromDisk loading from: " << saveFile.getFullPathName());
+    
+    libraryComponent.refreshFromLibrary();
 }
 
 void MainComponent::saveLibraryToDisk()
 {
+
     File saveFile = File::getSpecialLocation(File::userApplicationDataDirectory).getChildFile("trackLibrary.xml");
+
+
+    DBG("MainComponent::saveLibraryToDisk saving to: " << saveFile.getFullPathName());
 
     trackLibrary.saveToDisk(saveFile);
 }

@@ -66,6 +66,8 @@ public:
 
     TrackInfo getTrackInfoAt(int index) const;
 
+    void refreshFromLibrary();
+
     //void tableColumnsChanged(TableHeaderComponent* tableHeader) override;
     //void tableColumnsResized(TableHeaderComponent* tableHeader) override;
     //void tableSortOrderChanged(TableHeaderComponent* tableHeader) override;
