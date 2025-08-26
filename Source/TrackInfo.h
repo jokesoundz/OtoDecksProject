@@ -19,7 +19,13 @@ class TrackInfo
 
         const String& getTitle() const;
         const String& getArtist() const;
+        
+        void setTitle(const String& newTitle);
+        void setArtist(const String& newArtist);
+        
         const File& getFile() const;
+
+
 
     private:
         File file;

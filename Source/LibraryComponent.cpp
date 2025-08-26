@@ -112,35 +112,18 @@ void LibraryComponent::paintCell(Graphics& g,
                                     int height,
                                     bool rowIsSelected)
 {
-    //g.drawText(trackTitles[rowNumber],
-    //    2, 0,
-    //    width - 4, height,
-    //    Justification::centredLeft,
-    //    true);
 
     if (rowNumber >= trackInfos.size())
     {
         return;
     }
 
-    String text;
-
-    if (columnId == 2)
+    if (columnId == 4) //track length column is uneditable
     {
-        text = trackInfos[rowNumber].getTitle();
+        g.setColour(Colours::white);
+        g.setFont(14.0f);
+        g.drawText("...", 2, 0, width - 4, height, Justification::centredLeft, true);
     }
-    else if (columnId == 3)
-    {
-        text = trackInfos[rowNumber].getArtist();
-    }
-    else if (columnId == 4)
-    {
-        text = "";
-    }
-
-    g.setColour(Colours::white);
-    g.setFont(14.0f);
-    g.drawText(text, 2, 0, width - 4, height, Justification::centredLeft, true);
 }
 
 void LibraryComponent::cellClicked(int rowNumber, int columnId, const MouseEvent&)
@@ -210,8 +193,54 @@ Component* LibraryComponent::refreshComponentForCell(
 
     }
 
+    if (columnId == 2 || columnId == 3) //track title and artist name columns are editable
+    {
+        Label* label = dynamic_cast<Label*>(existingComponentToUpdate);
+        if (label == nullptr)
+        {
+            label = new Label();
+            label->setEditable(true, true, false);
+            label->setColour(Label::textColourId, Colours::white);
+            label->setFont(Font(14.0f));
 
-    if (columnId == 5 || columnId == 6)
+            label->onEditorHide = [this, label, rowNum, columnId]() //allows user to edit field but revert to previous text if cancel edit
+
+                {
+                    auto newText = label->getText();
+                    if (rowNum < trackInfos.size())
+                    {
+                        if (columnId == 2)
+                        {
+                            trackInfos[rowNum].setTitle(newText);
+                        }
+                        if (columnId == 3)
+                        {
+                            trackInfos[rowNum].setArtist(newText);
+                        }
+                    }
+                };
+        }
+
+        if (rowNum < trackInfos.size())
+        {
+            String currentText;
+
+            if (columnId == 2)
+            {
+                currentText = trackInfos[rowNum].getTitle();
+            }
+            else if (columnId == 3)
+            {
+                currentText = trackInfos[rowNum].getArtist();
+            }
+
+            label->setText(currentText, dontSendNotification);
+        }
+
+        return label;
+    }
+
+    if (columnId == 5 || columnId == 6) //load to deck columns are buttons
     {
         int deckNum = (columnId == 5 ? 1 : 2);
         auto* btn = static_cast<TextButton*>(existingComponentToUpdate);

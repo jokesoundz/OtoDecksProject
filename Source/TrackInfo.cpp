@@ -27,6 +27,16 @@ const String& TrackInfo::getArtist() const
     return artist;
 }
 
+void TrackInfo::setTitle(const String& newTitle)
+{
+    title = newTitle;
+}
+
+void TrackInfo::setArtist(const String& newArtist)
+{
+    artist = newArtist;
+}
+
 const File& TrackInfo::getFile() const
 {
     return file;
