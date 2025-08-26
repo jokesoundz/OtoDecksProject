@@ -12,7 +12,8 @@
 #include "LibraryComponent.h"
 
 //==============================================================================
-LibraryComponent::LibraryComponent()
+LibraryComponent::LibraryComponent(TrackLibrary* libraryPtr)
+    : trackLibrary(libraryPtr)
 {
     setupUI();
     setupTable();

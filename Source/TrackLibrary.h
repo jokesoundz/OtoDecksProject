@@ -19,10 +19,10 @@ class TrackLibrary
         TrackLibrary();
 
         void addTrack(const TrackInfo& track);
-        void removeTrack(int index);
+        //void removeTrack(int index);
 
-        void saveToDisk();
-        void loadFromDisk();
+        void saveToDisk(const File& file);
+        void loadFromDisk(const File& file);
 
         const std::vector<TrackInfo>& getTracks() const;
 
@@ -30,6 +30,5 @@ class TrackLibrary
         ValueTree libraryTree;
         std::vector<TrackInfo> trackInfos;
 
-        void rebuildTreeFromVector();
         void rebuildVectorFromTree();
 };
