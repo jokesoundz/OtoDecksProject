@@ -158,17 +158,17 @@ Component* LibraryComponent::refreshComponentForCell(
             checkbox->setClickingTogglesState(true);
 
             checkbox->onClick = [this, checkbox, rowNum]()
+            {
+                if (rowNum < trackLibrary->getTracks().size())
                 {
-                    if (rowNum < trackLibrary->getTracks().size())
-                    {
-                        //trackInfos[rowNum].setShouldDelete(checkbox->getToggleState());
-                        trackLibrary->getTracksMutable()[rowNum].setShouldDelete(checkbox->getToggleState());
-                        //trackLibrary->setShouldDeleteForTrack(rowNum, checkbox->getToggleState());
-                    }
-                };
+                    //trackInfos[rowNum].setShouldDelete(checkbox->getToggleState());
+                    trackLibrary->getTracksMutable()[rowNum].setShouldDelete(checkbox->getToggleState());
+                    //trackLibrary->setShouldDeleteForTrack(rowNum, checkbox->getToggleState());
+                }
+            };
         }
 
-        checkbox->setToggleState(trackLibrary->getTracks()[rowNum].getShouldDelete(), dontSendNotification);
+        checkbox->setToggleState(trackLibrary->getTracksMutable()[rowNum].getShouldDelete(), dontSendNotification);
         return checkbox;
 
     }
