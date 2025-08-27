@@ -179,21 +179,20 @@ Component* LibraryComponent::refreshComponentForCell(
             label->setFont(Font(14.0f));
 
             label->onEditorHide = [this, label, rowNum, columnId]() //allows user to edit field but revert to previous text if cancel edit
-
+            {
+                auto newText = label->getText();
+                if (rowNum < trackInfos.size())
                 {
-                    auto newText = label->getText();
-                    if (rowNum < trackInfos.size())
+                    if (columnId == 2)
                     {
-                        if (columnId == 2)
-                        {
-                            trackInfos[rowNum].setTitle(newText);
-                        }
-                        if (columnId == 3)
-                        {
-                            trackInfos[rowNum].setArtist(newText);
-                        }
+                        trackInfos[rowNum].setTitle(newText);
                     }
-                };
+                    if (columnId == 3)
+                    {
+                        trackInfos[rowNum].setArtist(newText);
+                    }
+                }
+            };
         }
 
         if (rowNum < trackInfos.size()) //import trackInfo for each track upon file import
@@ -218,18 +217,19 @@ Component* LibraryComponent::refreshComponentForCell(
     if (columnId == 5 || columnId == 6) //load to deck columns are buttons
     {
         int deckNum = (columnId == 5 ? 1 : 2);
-        auto* btn = static_cast<TextButton*>(existingComponentToUpdate);
+        //auto* btn = static_cast<TextButton*>(existingComponentToUpdate);
+        //if (btn == nullptr)
+        //{
+        //    btn = new TextButton("Load to Deck " + String(deckNum));
+        //}
+        TrackInfo track = trackInfos[rowNum];
+        auto* btn = new TextButton("Load to Deck " + String(deckNum));
 
-        if (btn == nullptr)
-        {
-            btn = new TextButton("Load to Deck " + String(deckNum));
-        }
-
-        btn->onClick = [this, rowNum, deckNum]()
+        btn->onClick = [this, track, deckNum]()
         {
             if (onLoadToDeck)
             {
-                onLoadToDeck(rowNum, deckNum);
+                onLoadToDeck(track, deckNum);
             }
         };
         return btn;
@@ -264,6 +264,7 @@ void LibraryComponent::buttonClicked(Button* button)
             
             trackInfos = trackLibrary->getTracks();
             tableComponent.updateContent();
+            tableComponent.repaint();
         });
     }
 }
