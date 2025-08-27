@@ -80,6 +80,7 @@ public:
     void refreshFromLibrary();
 
     void deleteSelectedRows();
+    void importTracks(); //encapsulating button logic
 
     //void tableColumnsChanged(TableHeaderComponent* tableHeader) override;
     //void tableColumnsResized(TableHeaderComponent* tableHeader) override;

@@ -24,7 +24,7 @@ class TrackLibrary
         void saveToDisk(const File& file);
         void loadFromDisk(const File& file);
 
-        std::vector<TrackInfo>& getTracks();
+        std::vector<TrackInfo>& getTracksMutable();
         const std::vector<TrackInfo>& getTracks() const;
         const std::vector<File>& getFilepaths() const;
 

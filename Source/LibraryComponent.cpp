@@ -57,10 +57,11 @@ void LibraryComponent::setupCallbacks()
 {
     importButton.addListener(this);
     //tableComponent.getHeader().addListener(this);
-    deleteButton.onClick = [this]()
-    {
-        deleteSelectedRows();
-    };
+    //deleteButton.onClick = [this]()
+    //{
+    //    deleteSelectedRows();
+    //};
+    deleteButton.addListener(this);
 }
 
 //==============================================================================
@@ -255,31 +256,11 @@ void LibraryComponent::buttonClicked(Button* button)
 {
     if (button == &importButton)
     {
-        auto fileChooserFlags = FileBrowserComponent::canSelectFiles |
-                                FileBrowserComponent::canSelectMultipleItems;
-        fChooser.launchAsync(fileChooserFlags, [this](const FileChooser& chooser)
-        {
-            //auto chosenFiles = chooser.getResults();
-            for (const auto& file : chooser.getResults())
-            {
-                if (file.existsAsFile())
-                {
-                    TrackInfo track(file);
-
-                    trackLibrary->addTrack(track);
-
-                    //trackInfos.push_back(track); //stores track info, e.g. tracktitle, artist, if filename is structured in typical way, using TrackInfo class tokenizer
-
-                    //importedFiles.push_back(file); //stores file info for accessing correctly on loadtodeck
-
-                }
-
-            }
-            
-            //trackInfos = trackLibrary->getTracks();
-            tableComponent.updateContent();
-            tableComponent.repaint();
-        });
+        importTracks();
+    }
+    else if (button == &deleteButton)
+    {
+        deleteSelectedRows();
     }
 }
 
@@ -287,6 +268,24 @@ const TrackInfo& LibraryComponent::getTrackInfoAt(int index) const
 {
     //return trackInfos[index];
     return trackLibrary->getTracks().at(index);
+}
+
+void LibraryComponent::importTracks()
+{
+    auto fileChooserFlags = FileBrowserComponent::canSelectFiles |
+                            FileBrowserComponent::canSelectMultipleItems;
+    fChooser.launchAsync(fileChooserFlags, [this](const FileChooser& chooser)
+    {
+        for (const auto& file : chooser.getResults())
+        {
+            if (file.existsAsFile())
+            {
+                TrackInfo track(file);
+                trackLibrary->addTrack(track);
+            }
+        }
+        refreshFromLibrary();
+    });
 }
 
 void LibraryComponent::deleteSelectedRows()
@@ -304,8 +303,6 @@ void LibraryComponent::deleteSelectedRows()
 
 void LibraryComponent::refreshFromLibrary()
 {
-    //trackInfos = trackLibrary->getTracks();
-    //importedFiles = trackLibrary->getFilepaths();
     tableComponent.updateContent();
     tableComponent.repaint();
 }

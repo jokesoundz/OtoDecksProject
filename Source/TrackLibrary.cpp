@@ -160,7 +160,7 @@ void TrackLibrary::rebuildVectorFromTree()
 
 
 // getter for library (that allows edit)
-std::vector<TrackInfo>& TrackLibrary::getTracks()
+std::vector<TrackInfo>& TrackLibrary::getTracksMutable()
 {
     return trackInfos;
 }
