@@ -27,6 +27,10 @@ class TrackLibrary
         const std::vector<TrackInfo>& getTracks() const;
         const std::vector<File>& getFilepaths() const;
 
+        void updateTrackTitle(const TrackInfo& track, const String& newTitle);
+        void updateTrackArtist(const TrackInfo& track, const String& newArtist);
+
+
     private:
         ValueTree libraryTree;
         std::vector<File> importedFiles;

@@ -29,8 +29,64 @@ void TrackLibrary::addTrack(const TrackInfo& track)
 
 void TrackLibrary::removeTrack(const TrackInfo& trackToRemove)
 {
+    for (int i = 0; i < trackInfos.size(); ++i)
+    {
+        if (trackInfos[i].getFile().getFullPathName() == trackToRemove.getFile().getFullPathName())
+        {
+            trackInfos.erase(trackInfos.begin() + i); //erase from trackInfos vec
 
+            if (i < libraryTree.getNumChildren())
+            {
+                libraryTree.removeChild(i, nullptr); //remove node from value tree
+            }
+
+            if (i < importedFiles.size())
+            {
+                importedFiles.erase(importedFiles.begin() + i); //erase from files vec to avoid sync erros
+            }
+
+            break;
+        }
+    }
 }
+
+void TrackLibrary::updateTrackTitle(const TrackInfo& track, const String& newTitle)
+{
+    for (int i = 0; i < trackInfos.size(); ++i)
+    {
+        if (trackInfos[i].getFile() == track.getFile())
+        {
+            trackInfos[i].setTitle(newTitle);
+
+            if (i < libraryTree.getNumChildren())
+            {
+                auto node = libraryTree.getChild(i);
+                node.setProperty("title", newTitle, nullptr);
+            }
+            break;
+        }
+    }
+}
+
+void TrackLibrary::updateTrackArtist(const TrackInfo& track, const String& newArtist)
+{
+    for (int i = 0; i < trackInfos.size(); ++i)
+    {
+        if (trackInfos[i].getFile() == track.getFile())
+        {
+            trackInfos[i].setArtist(newArtist);
+
+            if (i < libraryTree.getNumChildren())
+            {
+                auto node = libraryTree.getChild(i);
+                node.setProperty("artist", newArtist, nullptr);
+            }
+            break;
+        }
+    }
+}
+
+
 
 
 

@@ -69,6 +69,8 @@ public:
 
     void refreshFromLibrary();
 
+    void deleteSelectedRows();
+
     //void tableColumnsChanged(TableHeaderComponent* tableHeader) override;
     //void tableColumnsResized(TableHeaderComponent* tableHeader) override;
     //void tableSortOrderChanged(TableHeaderComponent* tableHeader) override;
@@ -91,6 +93,8 @@ private:
     //std::vector<std::string> trackTitles;
     Label tableHeaderLabel;
     TextButton importButton; //button for importing files from computer
+    TextButton deleteButton; //button for deleting files from library (dependent on which are selected by checkbox)
+
     std::vector<File> importedFiles;
     std::vector<TrackInfo> trackInfos;
 

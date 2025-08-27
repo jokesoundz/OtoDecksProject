@@ -31,12 +31,14 @@ void LibraryComponent::setupUI()
     addAndMakeVisible(tableComponent);
     addAndMakeVisible(tableHeaderLabel);
     addAndMakeVisible(importButton);
+    addAndMakeVisible(deleteButton);
 
     tableHeaderLabel.setText("Tracks Library", dontSendNotification);
     tableHeaderLabel.setFont(Font(16.0f, Font::bold));
     tableHeaderLabel.setJustificationType(Justification::centredLeft);
 
     importButton.setButtonText("Import File(s)...");
+    deleteButton.setButtonText("D");
 }
 
 void LibraryComponent::setupTable()
@@ -55,6 +57,10 @@ void LibraryComponent::setupCallbacks()
 {
     importButton.addListener(this);
     //tableComponent.getHeader().addListener(this);
+    deleteButton.onClick = [this]()
+    {
+        deleteSelectedRows();
+    };
 }
 
 //==============================================================================
@@ -81,6 +87,7 @@ void LibraryComponent::resized()
 
     tableHeaderLabel.setBounds(0, 0, getWidth() - 120, headerHeight);
     importButton.setBounds(getWidth() - 120, 0, 120, headerHeight);
+    deleteButton.setBounds(0, headerHeight, 30, 30);
 
     tableComponent.setBounds(0, headerHeight, getWidth(), getHeight() - headerHeight);
 }
@@ -140,32 +147,8 @@ Component* LibraryComponent::refreshComponentForCell(
     Component* existingComponentToUpdate)
 {
 
-    if (columnId == 1) //delete/ remove track from library column TODO: ticks are sticky, needs fixing.. JUCE is creating new toggle buttons?? multiple times(?)
+    if (columnId == 1) //delete/ remove track from library column
     {
-        //auto* checkbox = new ToggleButton();
-        //checkbox->setClickingTogglesState(true);
-        //checkbox->setToggleState(false, dontSendNotification);
-        //return checkbox;
-
-        //ToggleButton* checkbox;
-
-        //if (existingComponentToUpdate == nullptr)
-        //{
-        //    checkbox = new ToggleButton();
-        //    checkbox->setClickingTogglesState(true);
-        //    checkbox->onClick = [this, checkbox, rowNum]
-        //        {
-        //            importedFiles[rowNum].shouldDelete = checkbox->getToggleState();
-        //        };
-        //}
-        //else
-        //{
-        //    checkbox = static_cast<ToggleButton*>(existingComponentToUpdate);
-        //}
-
-        //checkbox->setToggleState(importedFiles[rowNum].shouldDelete, dontSendNotification);
-        //return checkbox;
-
         ToggleButton* checkbox = dynamic_cast<ToggleButton*>(existingComponentToUpdate);
         if (checkbox == nullptr)
         {
@@ -199,15 +182,28 @@ Component* LibraryComponent::refreshComponentForCell(
             label->onEditorHide = [this, label, rowNum, columnId]() //allows user to edit field but revert to previous text if cancel edit
             {
                 auto newText = label->getText();
-                if (rowNum < trackInfos.size())
+                //if (rowNum < trackInfos.size())
+                //{
+                //    if (columnId == 2)
+                //    {
+                //        trackInfos[rowNum].setTitle(newText);
+                //    }
+                //    if (columnId == 3)
+                //    {
+                //        trackInfos[rowNum].setArtist(newText);
+                //    }
+                //}
+                if (rowNum < trackLibrary->getTracks().size())
                 {
+                    const auto& track = trackLibrary->getTracks()[rowNum];
+
                     if (columnId == 2)
                     {
-                        trackInfos[rowNum].setTitle(newText);
+                        trackLibrary->updateTrackTitle(track, newText);
                     }
-                    if (columnId == 3)
+                    else if (columnId == 3)
                     {
-                        trackInfos[rowNum].setArtist(newText);
+                        trackLibrary->updateTrackArtist(track, newText);
                     }
                 }
             };
@@ -286,6 +282,19 @@ void LibraryComponent::buttonClicked(Button* button)
 TrackInfo LibraryComponent::getTrackInfoAt(int index) const
 {
     return trackInfos[index];
+}
+
+void LibraryComponent::deleteSelectedRows()
+{
+    for (const auto& track : trackInfos)
+    {
+        if (track.getShouldDelete())
+        {
+            trackLibrary->removeTrack(track);
+        }
+    }
+
+    refreshFromLibrary();
 }
 
 void LibraryComponent::refreshFromLibrary()
