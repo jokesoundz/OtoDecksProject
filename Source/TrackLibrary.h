@@ -24,12 +24,14 @@ class TrackLibrary
         void saveToDisk(const File& file);
         void loadFromDisk(const File& file);
 
+        std::vector<TrackInfo>& getTracks();
         const std::vector<TrackInfo>& getTracks() const;
         const std::vector<File>& getFilepaths() const;
 
         void updateTrackTitle(const TrackInfo& track, const String& newTitle);
         void updateTrackArtist(const TrackInfo& track, const String& newArtist);
 
+        //void setShouldDeleteForTrack(int index, bool shouldDelete);
 
     private:
         ValueTree libraryTree;

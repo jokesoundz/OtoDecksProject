@@ -95,7 +95,8 @@ void LibraryComponent::resized()
 int LibraryComponent::getNumRows()
 {
     //return trackTitles.size();
-    return static_cast<int>(trackInfos.size());
+    //return static_cast<int>(trackInfos.size());
+    return static_cast<int>(trackLibrary->getTracks().size());
 }
 
 void LibraryComponent::paintRowBackground(Graphics& g,
@@ -122,7 +123,7 @@ void LibraryComponent::paintCell(Graphics& g,
                                     bool rowIsSelected)
 {
 
-    if (rowNumber >= trackInfos.size())
+    if (rowNumber >= trackLibrary->getTracks().size())
     {
         return;
     }
@@ -157,14 +158,16 @@ Component* LibraryComponent::refreshComponentForCell(
 
             checkbox->onClick = [this, checkbox, rowNum]()
                 {
-                    if (rowNum < trackInfos.size())
+                    if (rowNum < trackLibrary->getTracks().size())
                     {
-                        trackInfos[rowNum].setShouldDelete(checkbox->getToggleState());
+                        //trackInfos[rowNum].setShouldDelete(checkbox->getToggleState());
+                        trackLibrary->getTracksMutable()[rowNum].setShouldDelete(checkbox->getToggleState());
+                        //trackLibrary->setShouldDeleteForTrack(rowNum, checkbox->getToggleState());
                     }
                 };
         }
 
-        checkbox->setToggleState(trackInfos[rowNum].getShouldDelete(), dontSendNotification);
+        checkbox->setToggleState(trackLibrary->getTracks()[rowNum].getShouldDelete(), dontSendNotification);
         return checkbox;
 
     }
@@ -209,17 +212,17 @@ Component* LibraryComponent::refreshComponentForCell(
             };
         }
 
-        if (rowNum < trackInfos.size()) //import trackInfo for each track upon file import
+        if (rowNum < trackLibrary->getTracks().size()) //import trackInfo for each track upon file import
         {
             String currentText;
 
             if (columnId == 2)
             {
-                currentText = trackInfos[rowNum].getTitle();
+                currentText = trackLibrary->getTracks()[rowNum].getTitle();
             }
             else if (columnId == 3)
             {
-                currentText = trackInfos[rowNum].getArtist();
+                currentText = trackLibrary->getTracks()[rowNum].getArtist();
             }
 
             label->setText(currentText, dontSendNotification);
@@ -232,7 +235,8 @@ Component* LibraryComponent::refreshComponentForCell(
     {
         int deckNum = (columnId == 5 ? 1 : 2);
 
-        TrackInfo track = trackInfos[rowNum];
+        //TrackInfo track = trackInfos[rowNum];
+        TrackInfo track = trackLibrary->getTracks()[rowNum];
         auto* btn = new TextButton("Load to Deck " + String(deckNum));
 
         btn->onClick = [this, track, deckNum]()
@@ -266,27 +270,28 @@ void LibraryComponent::buttonClicked(Button* button)
 
                     //trackInfos.push_back(track); //stores track info, e.g. tracktitle, artist, if filename is structured in typical way, using TrackInfo class tokenizer
 
-                    importedFiles.push_back(file); //stores file info for accessing correctly on loadtodeck
+                    //importedFiles.push_back(file); //stores file info for accessing correctly on loadtodeck
 
                 }
 
             }
             
-            trackInfos = trackLibrary->getTracks();
+            //trackInfos = trackLibrary->getTracks();
             tableComponent.updateContent();
             tableComponent.repaint();
         });
     }
 }
 
-TrackInfo LibraryComponent::getTrackInfoAt(int index) const
+const TrackInfo& LibraryComponent::getTrackInfoAt(int index) const
 {
-    return trackInfos[index];
+    //return trackInfos[index];
+    return trackLibrary->getTracks().at(index);
 }
 
 void LibraryComponent::deleteSelectedRows()
 {
-    for (const auto& track : trackInfos)
+    for (const auto& track : trackLibrary->getTracks())
     {
         if (track.getShouldDelete())
         {
@@ -299,8 +304,8 @@ void LibraryComponent::deleteSelectedRows()
 
 void LibraryComponent::refreshFromLibrary()
 {
-    trackInfos = trackLibrary->getTracks();
-    importedFiles = trackLibrary->getFilepaths();
+    //trackInfos = trackLibrary->getTracks();
+    //importedFiles = trackLibrary->getFilepaths();
     tableComponent.updateContent();
     tableComponent.repaint();
 }

@@ -54,18 +54,28 @@ public:
     //std::function<void(int row, int deck)> onLoadToDeck;
     std::function<void(const TrackInfo&, int deck)> onLoadToDeck;
 
+    //int getNumImportedFiles() const noexcept
+    //{
+    //    return importedFiles.size();
+    //}
     int getNumImportedFiles() const noexcept
     {
-        return importedFiles.size();
+        return trackLibrary->getFilepaths().size();
     }
 
+    //File getImportedFileAt(int index) const
+    //{
+    //    jassert(index >= 0 && index < importedFiles.size());
+    //    return importedFiles[index];
+    //}
     File getImportedFileAt(int index) const
     {
-        jassert(index >= 0 && index < importedFiles.size());
-        return importedFiles[index];
+        jassert(index >= 0 && index < trackLibrary->getFilepaths().size());
+        return trackLibrary->getFilepaths()[index];
     }
 
-    TrackInfo getTrackInfoAt(int index) const;
+    //TrackInfo getTrackInfoAt(int index) const;
+    const TrackInfo& getTrackInfoAt(int index) const;
 
     void refreshFromLibrary();
 
@@ -95,8 +105,8 @@ private:
     TextButton importButton; //button for importing files from computer
     TextButton deleteButton; //button for deleting files from library (dependent on which are selected by checkbox)
 
-    std::vector<File> importedFiles;
-    std::vector<TrackInfo> trackInfos;
+    //std::vector<File> importedFiles;
+    //std::vector<TrackInfo> trackInfos;
 
     TrackLibrary* trackLibrary = nullptr;
 };

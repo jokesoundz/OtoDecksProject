@@ -159,7 +159,13 @@ void TrackLibrary::rebuildVectorFromTree()
 }
 
 
-// getter for library
+// getter for library (that allows edit)
+std::vector<TrackInfo>& TrackLibrary::getTracks()
+{
+    return trackInfos;
+}
+
+// getter for library that preserves 
 const std::vector<TrackInfo>& TrackLibrary::getTracks() const
 {
     return trackInfos;
