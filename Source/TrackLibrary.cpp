@@ -125,6 +125,8 @@ void TrackLibrary::rebuildVectorFromTree()
         if (node.hasType("Track"))
         {
             File file(node["filePath"].toString());
+            importedFiles.push_back(file);
+
             TrackInfo track(file);
 
             track.setTitle(node["title"].toString());
@@ -140,4 +142,9 @@ void TrackLibrary::rebuildVectorFromTree()
 const std::vector<TrackInfo>& TrackLibrary::getTracks() const
 {
     return trackInfos;
+}
+
+const std::vector<File>& TrackLibrary::getFilepaths() const
+{
+    return importedFiles;
 }

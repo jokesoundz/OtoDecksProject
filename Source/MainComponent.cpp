@@ -123,8 +123,8 @@ void MainComponent::loadLibraryFromDisk()
 
     trackLibrary.loadFromDisk(saveFile);
 
-    DBG("MainComponent::loadLibraryFromDisk loading from: " << saveFile.getFullPathName());
-    
+    //DBG("MainComponent::loadLibraryFromDisk loading from: " << saveFile.getFullPathName());
+
     libraryComponent.refreshFromLibrary();
 }
 
@@ -133,8 +133,12 @@ void MainComponent::saveLibraryToDisk()
 
     File saveFile = File::getSpecialLocation(File::userApplicationDataDirectory).getChildFile("trackLibrary.xml");
 
+    if (saveFile.existsAsFile())
+    {
+        saveFile.deleteFile();
+    }
 
-    DBG("MainComponent::saveLibraryToDisk saving to: " << saveFile.getFullPathName());
+    //DBG("MainComponent::saveLibraryToDisk saving to: " << saveFile.getFullPathName());
 
     trackLibrary.saveToDisk(saveFile);
 }

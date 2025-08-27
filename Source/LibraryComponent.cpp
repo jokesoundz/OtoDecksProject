@@ -77,12 +77,12 @@ void LibraryComponent::paint (juce::Graphics& g)
 void LibraryComponent::resized()
 {
 
-    const int headerArea = 40;
+    const int headerHeight = 40;
 
-    tableHeaderLabel.setBounds(0, 0, getWidth() - 120, headerArea);
-    importButton.setBounds(getWidth() - 120, 0, 120, headerArea);
+    tableHeaderLabel.setBounds(0, 0, getWidth() - 120, headerHeight);
+    importButton.setBounds(getWidth() - 120, 0, 120, headerHeight);
 
-    tableComponent.setBounds(0, headerArea, getWidth(), getHeight());
+    tableComponent.setBounds(0, headerHeight, getWidth(), getHeight() - headerHeight);
 }
 
 int LibraryComponent::getNumRows()
@@ -276,6 +276,7 @@ TrackInfo LibraryComponent::getTrackInfoAt(int index) const
 void LibraryComponent::refreshFromLibrary()
 {
     trackInfos = trackLibrary->getTracks();
+    importedFiles = trackLibrary->getFilepaths();
     tableComponent.updateContent();
     tableComponent.repaint();
 }

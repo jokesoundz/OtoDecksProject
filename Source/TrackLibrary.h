@@ -25,10 +25,13 @@ class TrackLibrary
         void loadFromDisk(const File& file);
 
         const std::vector<TrackInfo>& getTracks() const;
+        const std::vector<File>& getFilepaths() const;
 
     private:
         ValueTree libraryTree;
+        std::vector<File> importedFiles;
         std::vector<TrackInfo> trackInfos;
+
 
         void rebuildVectorFromTree();
 };

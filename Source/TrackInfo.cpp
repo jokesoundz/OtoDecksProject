@@ -66,5 +66,4 @@ void TrackInfo::parseFilename()
         title = tokens[tokens.size() - 1].trim();
         artist = tokens[0];
     }
-
 }

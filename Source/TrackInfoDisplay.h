@@ -25,7 +25,9 @@ class TrackInfoDisplay  : public juce::Component
         void paint (juce::Graphics&) override;
         void resized() override;
 
-
+        /** permits User Interaction
+        *** take current TrackInfo from LibraryComponent
+        *** updates DeckGUI with correct TrackInfoDisplay */
         void setTrackInfo(const TrackInfo& trackInfo);
 
     private:
