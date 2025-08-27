@@ -55,26 +55,23 @@ void MainComponent::setupUI()
 void MainComponent::setupCallbacks()
 {
     //libraryComponent.onLoadToDeck = [this](int row, int deckNum)
-    libraryComponent.onLoadToDeck = [this](const TrackInfo& track, int deckNum)
+    //libraryComponent.onLoadToDeck = [this](const TrackInfo& track, int deckNum)
+    //{
+    //    const auto& fileToLoad = track.getFile();
+
+    //    if (deckNum == 1)
+    //    {
+    //        deckGUI1.loadFile(fileToLoad, &track);
+    //    }
+
+    //    else if (deckNum == 2)
+    //    {
+    //        deckGUI2.loadFile(fileToLoad, &track);
+    //    }
+    //};
+    libraryComponent.onLoadToDeck = [this](TrackInfo* track, int deckNum)
     {
-        //if (row < 0 || row >= (int)libraryComponent.getNumImportedFiles())
-        //{
-        //    return;
-        //}
-
-        //auto fileToLoad = libraryComponent.getImportedFileAt(row);
-        //auto trackInfo = libraryComponent.getTrackInfoAt(row);
-        //if (deckNum == 1)
-        //{
-        //    deckGUI1.loadFile(fileToLoad, trackInfo);
-        //}
-
-        //else if (deckNum == 2)
-        //{
-        //    deckGUI2.loadFile(fileToLoad, trackInfo);
-        //}
-
-        const auto& fileToLoad = track.getFile();
+        const auto& fileToLoad = track->getFile();
 
         if (deckNum == 1)
         {
@@ -85,7 +82,7 @@ void MainComponent::setupCallbacks()
         {
             deckGUI2.loadFile(fileToLoad, track);
         }
-    };
+};
 }
 
 //==============================================================================

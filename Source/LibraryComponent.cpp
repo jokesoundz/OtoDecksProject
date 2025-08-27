@@ -197,9 +197,9 @@ Component* LibraryComponent::refreshComponentForCell(
                 //        trackInfos[rowNum].setArtist(newText);
                 //    }
                 //}
-                if (rowNum < trackLibrary->getTracks().size())
+                if (rowNum < trackLibrary->getTracksMutable().size())
                 {
-                    const auto& track = trackLibrary->getTracks()[rowNum];
+                    auto& track = trackLibrary->getTracksMutable()[rowNum];
 
                     if (columnId == 2)
                     {
@@ -213,17 +213,17 @@ Component* LibraryComponent::refreshComponentForCell(
             };
         }
 
-        if (rowNum < trackLibrary->getTracks().size()) //import trackInfo for each track upon file import
+        if (rowNum < trackLibrary->getTracksMutable().size()) //import trackInfo for each track upon file import
         {
             String currentText;
 
             if (columnId == 2)
             {
-                currentText = trackLibrary->getTracks()[rowNum].getTitle();
+                currentText = trackLibrary->getTracksMutable()[rowNum].getTitle();
             }
             else if (columnId == 3)
             {
-                currentText = trackLibrary->getTracks()[rowNum].getArtist();
+                currentText = trackLibrary->getTracksMutable()[rowNum].getArtist();
             }
 
             label->setText(currentText, dontSendNotification);
@@ -237,7 +237,7 @@ Component* LibraryComponent::refreshComponentForCell(
         int deckNum = (columnId == 5 ? 1 : 2);
 
         //TrackInfo track = trackInfos[rowNum];
-        TrackInfo track = trackLibrary->getTracks()[rowNum];
+        TrackInfo* track = &trackLibrary->getTracksMutable()[rowNum];
         auto* btn = new TextButton("Load to Deck " + String(deckNum));
 
         btn->onClick = [this, track, deckNum]()

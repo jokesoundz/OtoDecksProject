@@ -12,6 +12,7 @@
 #include "DJAudioPlayer.h"
 #include "DeckGUI.h"
 #include "LibraryComponent.h"
+#include "TrackInfo.h"
 
 
 //==============================================================================

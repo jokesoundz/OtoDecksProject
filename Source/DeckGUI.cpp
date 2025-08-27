@@ -267,11 +267,13 @@ void DeckGUI::updatePlayPauseButton()
     }
 }
 
-void DeckGUI::loadFile(const File& file, const TrackInfo& trackInfo)
+void DeckGUI::loadFile(const File& file, const TrackInfo* trackInfo)
 {
     player->loadURL(URL{file});
     waveformDisplay.loadURL(URL{file});
     timeDisplay.loadURL(URL{ file });
+
+    //TrackInfo* selectedTrack = &trackLibrary.getTrackInfos()[selectedIndex]
     trackInfoDisplay.setTrackInfo(trackInfo);
     updatePlayPauseButton();
 }

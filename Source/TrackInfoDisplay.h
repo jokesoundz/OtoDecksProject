@@ -28,7 +28,7 @@ class TrackInfoDisplay  : public juce::Component
         /** permits User Interaction
         *** take current TrackInfo from LibraryComponent
         *** updates DeckGUI with correct TrackInfoDisplay */
-        void setTrackInfo(const TrackInfo& trackInfo);
+        void setTrackInfo(const TrackInfo* trackInfo);
 
     private:
         JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (TrackInfoDisplay)

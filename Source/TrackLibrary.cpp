@@ -50,7 +50,8 @@ void TrackLibrary::removeTrack(const TrackInfo& trackToRemove)
     }
 }
 
-void TrackLibrary::updateTrackTitle(const TrackInfo& track, const String& newTitle)
+//void TrackLibrary::updateTrackTitle(const TrackInfo& track, const String& newTitle)
+void TrackLibrary::updateTrackTitle(TrackInfo& track, const String& newTitle)
 {
     for (int i = 0; i < trackInfos.size(); ++i)
     {
@@ -68,7 +69,7 @@ void TrackLibrary::updateTrackTitle(const TrackInfo& track, const String& newTit
     }
 }
 
-void TrackLibrary::updateTrackArtist(const TrackInfo& track, const String& newArtist)
+void TrackLibrary::updateTrackArtist(TrackInfo& track, const String& newArtist)
 {
     for (int i = 0; i < trackInfos.size(); ++i)
     {

@@ -52,7 +52,7 @@ public:
 
     /** row = which rack, deck = 1 or 2 */
     //std::function<void(int row, int deck)> onLoadToDeck;
-    std::function<void(const TrackInfo&, int deck)> onLoadToDeck;
+    std::function<void(TrackInfo*, int deck)> onLoadToDeck;
 
     //int getNumImportedFiles() const noexcept
     //{

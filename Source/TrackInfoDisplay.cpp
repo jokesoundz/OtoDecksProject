@@ -47,8 +47,8 @@ void TrackInfoDisplay::resized()
 }
 
 
-void TrackInfoDisplay::setTrackInfo(const TrackInfo& trackInfo)
+void TrackInfoDisplay::setTrackInfo(const TrackInfo* trackInfo)
 {
-    titleLabel.setText(trackInfo.getTitle(), dontSendNotification);
-    artistLabel.setText(trackInfo.getArtist(), dontSendNotification);
+    titleLabel.setText(trackInfo->getTitle(), dontSendNotification);
+    artistLabel.setText(trackInfo->getArtist(), dontSendNotification);
 }
