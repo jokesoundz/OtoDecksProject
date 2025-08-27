@@ -41,10 +41,10 @@ void LibraryComponent::setupUI()
 
 void LibraryComponent::setupTable()
 {
-    tableComponent.getHeader().addColumn("del", 1, 30);
+    tableComponent.getHeader().addColumn("del", 1, 30); //should add Button inplace of 'del' text
     tableComponent.getHeader().addColumn("Track Title", 2, 150);
     tableComponent.getHeader().addColumn("Artist", 3, 150);
-    tableComponent.getHeader().addColumn("Length", 4, 70);
+    tableComponent.getHeader().addColumn("...", 4, 70); //could be used as track length column
     tableComponent.getHeader().addColumn("", 5, 100);
     tableComponent.getHeader().addColumn("", 6, 100);
 
@@ -142,10 +142,10 @@ Component* LibraryComponent::refreshComponentForCell(
 
     if (columnId == 1) //delete/ remove track from library column TODO: ticks are sticky, needs fixing.. JUCE is creating new toggle buttons?? multiple times(?)
     {
-        auto* checkbox = new ToggleButton();
-        checkbox->setClickingTogglesState(true);
-        checkbox->setToggleState(false, dontSendNotification);
-        return checkbox;
+        //auto* checkbox = new ToggleButton();
+        //checkbox->setClickingTogglesState(true);
+        //checkbox->setToggleState(false, dontSendNotification);
+        //return checkbox;
 
         //ToggleButton* checkbox;
 
@@ -165,6 +165,24 @@ Component* LibraryComponent::refreshComponentForCell(
 
         //checkbox->setToggleState(importedFiles[rowNum].shouldDelete, dontSendNotification);
         //return checkbox;
+
+        ToggleButton* checkbox = dynamic_cast<ToggleButton*>(existingComponentToUpdate);
+        if (checkbox == nullptr)
+        {
+            checkbox = new ToggleButton();
+            checkbox->setClickingTogglesState(true);
+
+            checkbox->onClick = [this, checkbox, rowNum]()
+                {
+                    if (rowNum < trackInfos.size())
+                    {
+                        trackInfos[rowNum].setShouldDelete(checkbox->getToggleState());
+                    }
+                };
+        }
+
+        checkbox->setToggleState(trackInfos[rowNum].getShouldDelete(), dontSendNotification);
+        return checkbox;
 
     }
 
@@ -217,11 +235,7 @@ Component* LibraryComponent::refreshComponentForCell(
     if (columnId == 5 || columnId == 6) //load to deck columns are buttons
     {
         int deckNum = (columnId == 5 ? 1 : 2);
-        //auto* btn = static_cast<TextButton*>(existingComponentToUpdate);
-        //if (btn == nullptr)
-        //{
-        //    btn = new TextButton("Load to Deck " + String(deckNum));
-        //}
+
         TrackInfo track = trackInfos[rowNum];
         auto* btn = new TextButton("Load to Deck " + String(deckNum));
 

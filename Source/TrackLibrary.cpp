@@ -27,6 +27,11 @@ void TrackLibrary::addTrack(const TrackInfo& track)
     trackInfos.push_back(track);
 }
 
+void TrackLibrary::removeTrack(const TrackInfo& trackToRemove)
+{
+
+}
+
 
 
 void TrackLibrary::saveToDisk(const File& file)
@@ -46,21 +51,6 @@ void TrackLibrary::saveToDisk(const File& file)
     }
 }
 
-//void TrackLibrary::saveToDisk(const File& file)
-//{
-//    Logger::outputDebugString("TrackLibrary::saveToDisk called");
-//    Logger::outputDebugString("Saving to: " + file.getFullPathName());
-//    Logger::outputDebugString("Num tracks being saved: " + String(libraryTree.getNumChildren()));
-//
-//    if (auto xml = libraryTree.createXml())
-//    {
-//        xml->writeToFile(file, {});
-//    }
-//    else
-//    {
-//        Logger::outputDebugString("Failed to open file for writing");
-//    }
-//}
 
 void TrackLibrary::loadFromDisk(const File& file)
 {
@@ -89,31 +79,6 @@ void TrackLibrary::loadFromDisk(const File& file)
     }
 }
 
-//void TrackLibrary::loadFromDisk(const File& file)
-//{
-//    Logger::outputDebugString("TrackLibrary::loadFromDisk called");
-//    Logger::outputDebugString("Loading from: " + file.getFullPathName());
-//
-//    if (!file.existsAsFile())
-//    {
-//        Logger::outputDebugString("File does not exist");
-//        return;
-//    }
-//
-//    auto xml = XmlDocument(file).getDocumentElement();
-//    if (xml != nullptr)
-//    {
-//        auto tree = ValueTree::fromXml(*xml);
-//        Logger::outputDebugString("Loaded tree from: " + tree.getType().toString());
-//        Logger::outputDebugString("Num children: " + String(tree.getNumChildren()));
-//
-//        if (tree.isValid() && tree.hasType("Library"))
-//        {
-//            libraryTree = tree;
-//            rebuildVectorFromTree();
-//        }
-//    }
-//}
 
 void TrackLibrary::rebuildVectorFromTree()
 {

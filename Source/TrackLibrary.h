@@ -19,7 +19,7 @@ class TrackLibrary
         TrackLibrary();
 
         void addTrack(const TrackInfo& track);
-        //void removeTrack(int index);
+        void removeTrack(const TrackInfo& trackToRemove);
 
         void saveToDisk(const File& file);
         void loadFromDisk(const File& file);

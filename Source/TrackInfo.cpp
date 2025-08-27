@@ -42,6 +42,16 @@ const File& TrackInfo::getFile() const
     return file;
 }
 
+bool TrackInfo::getShouldDelete() const
+{
+    return shouldDelete;
+}
+
+void TrackInfo::setShouldDelete(bool shouldDeleteFlag)
+{
+    shouldDelete = shouldDeleteFlag;
+}
+
 void TrackInfo::parseFilename()
 {
     String filename = file.getFileNameWithoutExtension();

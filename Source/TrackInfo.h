@@ -27,6 +27,9 @@ class TrackInfo
         
         const File& getFile() const;
 
+        bool getShouldDelete() const;
+        void setShouldDelete(bool shouldDeleteFlag);
+
     private:
         File file;
         String title;
@@ -36,4 +39,6 @@ class TrackInfo
         *** ready for using in LibraryComponent and TrackInfoDisplay
         *** and storing in TrackLibrary */
         void parseFilename();
+
+        bool shouldDelete = false;
 };
