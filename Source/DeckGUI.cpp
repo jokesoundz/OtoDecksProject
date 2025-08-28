@@ -98,12 +98,13 @@ void DeckGUI::paint (Graphics& g)
     g.setColour (Colours::grey);
     g.drawRect (getLocalBounds(), 1);
 
-    g.setColour (Colours::white);
-    g.setFont (14.0f);
-    g.drawText ("DeckGUI", getLocalBounds(),
-                Justification::centred, true);
+    //g.setColour (Colours::white);
+    //g.setFont (14.0f);
+    //g.drawText ("DeckGUI", getLocalBounds(),
+    //            Justification::centred, true);
 }
 
+//NEW LAYOUT
 void DeckGUI::resized()
 {
     double rowH = getHeight() / 8;
@@ -111,17 +112,21 @@ void DeckGUI::resized()
     const int border = 120;
     const int waveformBorder = 10;
 
+    //Display TRACK TITLE & ARTIST above WAVEFORM above TRACK POSITION/SCRUBBER above TIMEDISPLAY
     trackInfoDisplay.setBounds(0, 0, getWidth(), rowH);
     waveformDisplay.setBounds(waveformBorder, rowH, getWidth() - waveformBorder * 2, rowH * 2);
-    //posSlider.setBounds(0, rowH * 2.5, getWidth(), rowH);
-    posSlider.setBounds(-1, rowH * 2.5, getWidth()+2, rowH);
+    posSlider.setBounds(-1, rowH * 2.5, getWidth() + 2, rowH);
     posSlider.setTextBoxStyle(juce::Slider::NoTextBox, false, 0, 0);
     timeDisplay.setBounds(0, rowH * 3, getWidth(), rowH);
 
-    playPauseButton.setBounds(0, rowH *4, getWidth(), rowH);
-    cueButton.setBounds(0, rowH *5, getWidth(), rowH);
-    volSlider.setBounds(border, rowH * 6, getWidth() - border, rowH);
-    speedSlider.setBounds(border, rowH * 7, getWidth() - border, rowH);
+    //ORIGINAL BUTTON/ DIAL LAYOUT
+    //playPauseButton.setBounds(0, rowH * 4, getWidth(), rowH);
+    //cueButton.setBounds(0, rowH * 5, getWidth(), rowH);
+    //volSlider.setBounds(border, rowH * 6, getWidth() - border, rowH);
+    //speedSlider.setBounds(border, rowH * 7, getWidth() - border, rowH);
+
+    //NEW BUTTON/ DIAL LAYOUT
+
 }
 
 void DeckGUI::buttonClicked(Button* button)

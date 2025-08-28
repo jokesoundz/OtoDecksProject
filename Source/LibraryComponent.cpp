@@ -29,12 +29,6 @@ LibraryComponent::~LibraryComponent()
 
 void LibraryComponent::setupAssets()
 {
-    //auto normalBinFile = File::getSpecialLocation(File::currentExecutableFile).getSiblingFile("Assets/delete-bin-line.png");
-    //auto hoverPressedBinFile = File::getSpecialLocation(File::currentExecutableFile).getSiblingFile("Assets/delete-bin-fill.png");
-    // 
-    //deleteIconNormal = ImageFileFormat::loadFrom(normalBinFile);
-    //deleteIconHoverPressed = ImageFileFormat::loadFrom(hoverPressedBinFile);
-
     deleteIconNormal = ImageFileFormat::loadFrom(BinaryData::deletebinline_png, BinaryData::deletebinline_pngSize);
     deleteIconHoverPressed = ImageFileFormat::loadFrom(BinaryData::deletebinfill_png, BinaryData::deletebinfill_pngSize);
 }
@@ -173,22 +167,40 @@ Component* LibraryComponent::refreshComponentForCell(
         {
             checkbox = new ToggleButton();
             checkbox->setClickingTogglesState(true);
-
             checkbox->onClick = [this, checkbox, rowNum]()
             {
                 if (rowNum < trackLibrary->getTracks().size())
                 {
-                    //trackInfos[rowNum].setShouldDelete(checkbox->getToggleState());
                     trackLibrary->getTracksMutable()[rowNum].setShouldDelete(checkbox->getToggleState());
-                    //trackLibrary->setShouldDeleteForTrack(rowNum, checkbox->getToggleState());
                 }
             };
         }
-
         checkbox->setToggleState(trackLibrary->getTracksMutable()[rowNum].getShouldDelete(), dontSendNotification);
         return checkbox;
-
     }
+
+    //if (columnId == 1) //delete/ remove track from library column
+    //{
+    //    ToggleButton* checkbox = dynamic_cast<ToggleButton*>(existingComponentToUpdate);
+    //    if (checkbox == nullptr)
+    //    {
+    //        checkbox = new ToggleButton();
+    //        checkbox->setClickingTogglesState(true);
+    //        checkbox->setComponentID("deleteCheckbox");
+    //        addAndMakeVisible(checkbox);
+    //    }
+
+    //    checkbox->onClick = [this, checkbox, rowNum]()
+    //    {
+    //        if (rowNum < trackLibrary->getTracks().size())
+    //        {
+    //            trackLibrary->getTracksMutable()[rowNum].setShouldDelete(checkbox->getToggleState());
+    //        }
+    //    };
+
+    //    checkbox->setToggleState(trackLibrary->getTracksMutable()[rowNum].getShouldDelete(), dontSendNotification);
+    //    return checkbox;
+    //}
 
     if (columnId == 2 || columnId == 3) //track title and artist name columns are editable
     {
@@ -203,17 +215,6 @@ Component* LibraryComponent::refreshComponentForCell(
             label->onEditorHide = [this, label, rowNum, columnId]() //allows user to edit field but revert to previous text if cancel edit
             {
                 auto newText = label->getText();
-                //if (rowNum < trackInfos.size())
-                //{
-                //    if (columnId == 2)
-                //    {
-                //        trackInfos[rowNum].setTitle(newText);
-                //    }
-                //    if (columnId == 3)
-                //    {
-                //        trackInfos[rowNum].setArtist(newText);
-                //    }
-                //}
                 if (rowNum < trackLibrary->getTracksMutable().size())
                 {
                     auto& track = trackLibrary->getTracksMutable()[rowNum];
@@ -252,19 +253,28 @@ Component* LibraryComponent::refreshComponentForCell(
     if (columnId == 5 || columnId == 6) //load to deck columns are buttons
     {
         int deckNum = (columnId == 5 ? 1 : 2);
+        
+        TextButton* btn = dynamic_cast<TextButton*>(existingComponentToUpdate);
 
-        //TrackInfo track = trackInfos[rowNum];
-        TrackInfo* track = &trackLibrary->getTracksMutable()[rowNum];
-        auto* btn = new TextButton("Load to Deck " + String(deckNum));
-
-        btn->onClick = [this, track, deckNum]()
+        if (btn == nullptr || btn->getComponentID() != "deckButton" + String(columnId))
         {
-            if (onLoadToDeck)
+            btn = new TextButton("Load to Deck " + String(deckNum));
+            btn->setComponentID("deckButton" + String(columnId));
+
+            btn->onClick = [this, rowNum, deckNum]()
             {
-                onLoadToDeck(track, deckNum);
-            }
-        };
+                if (rowNum < trackLibrary->getTracksMutable().size())
+                {
+                    TrackInfo* track = &trackLibrary->getTracksMutable()[rowNum];
+                    if (onLoadToDeck)
+                    {
+                        onLoadToDeck(track, deckNum);
+                    }
+                }
+            };
+        }
         return btn;
+
     }
     return existingComponentToUpdate;
 }
@@ -305,13 +315,15 @@ void LibraryComponent::importTracks()
     });
 }
 
+
 void LibraryComponent::deleteSelectedRows()
 {
-    for (const auto& track : trackLibrary->getTracks())
+    auto& tracks = trackLibrary->getTracksMutable();
+    for (int i = tracks.size() - 1; i >= 0; --i) //go through backwards to ensure vector erased correctly & completely
     {
-        if (track.getShouldDelete())
+        if (tracks[i].getShouldDelete())
         {
-            trackLibrary->removeTrack(track);
+            trackLibrary->removeTrack(tracks[i]);
         }
     }
 

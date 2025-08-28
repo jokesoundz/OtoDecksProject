@@ -93,9 +93,6 @@ void TrackLibrary::updateTrackArtist(TrackInfo& track, const String& newArtist)
 
 void TrackLibrary::saveToDisk(const File& file)
 {
-    Logger::outputDebugString("TrackLibrary::saveToDisk called");
-    Logger::outputDebugString("Saving to: " + file.getFullPathName());
-    Logger::outputDebugString("Num tracks being saved: " + String(libraryTree.getNumChildren()));
 
     FileOutputStream stream(file);
     if (stream.openedOk())
@@ -120,13 +117,6 @@ void TrackLibrary::loadFromDisk(const File& file)
     if (stream.openedOk())
     {
         auto loadedTree = ValueTree::readFromStream(stream);
-
-        DBG("TrackLibrary::LoadFromDisk called");
-        DBG("File exists: " + file.existsAsFile());
-        DBG("Loaded tree is valid: " + loadedTree.isValid());
-        DBG("Loaded tree type: " << loadedTree.getType().toString());
-        DBG("Num children: " << loadedTree.getNumChildren());
-
 
         if (loadedTree.isValid() && loadedTree.hasType("Library"))
         {
