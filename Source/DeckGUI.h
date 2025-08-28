@@ -23,7 +23,7 @@ class DeckGUI : public Component,
                 public Button::Listener,
                 public Slider::Listener,
                 public MouseListener,
-                public FileDragAndDropTarget, 
+                //public FileDragAndDropTarget, 
                 public Timer
 {
 public:
@@ -48,8 +48,8 @@ public:
     void sliderDragStarted(Slider* slider) override;
     void sliderDragEnded(Slider* slider) override;
 
-    bool isInterestedInFileDrag (const StringArray &files) override;
-    void filesDropped (const StringArray &files, int x, int y) override; 
+    //bool isInterestedInFileDrag (const StringArray &files) override;
+    //void filesDropped (const StringArray &files, int x, int y) override; 
     void loadFile(const File& file, const TrackInfo* trackInfo);
 
     void timerCallback() override; 

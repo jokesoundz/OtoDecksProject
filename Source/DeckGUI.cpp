@@ -113,7 +113,8 @@ void DeckGUI::resized()
 
     trackInfoDisplay.setBounds(0, 0, getWidth(), rowH);
     waveformDisplay.setBounds(waveformBorder, rowH, getWidth() - waveformBorder * 2, rowH * 2);
-    posSlider.setBounds(0, rowH * 2.5, getWidth(), rowH);
+    //posSlider.setBounds(0, rowH * 2.5, getWidth(), rowH);
+    posSlider.setBounds(-1, rowH * 2.5, getWidth()+2, rowH);
     posSlider.setTextBoxStyle(juce::Slider::NoTextBox, false, 0, 0);
     timeDisplay.setBounds(0, rowH * 3, getWidth(), rowH);
 
@@ -222,20 +223,20 @@ void DeckGUI::sliderDragEnded(Slider* slider)
     }
 }
 
-bool DeckGUI::isInterestedInFileDrag (const StringArray &files)
-{
-    std::cout << "DeckGUI::isInterestedInFileDrag" << std::endl;
-    return true; 
-}
+//bool DeckGUI::isInterestedInFileDrag (const StringArray &files)
+//{
+//    std::cout << "DeckGUI::isInterestedInFileDrag" << std::endl;
+//    return true; 
+//}
 
-void DeckGUI::filesDropped (const StringArray &files, int x, int y)
-{
-    std::cout << "DeckGUI::filesDropped" << std::endl;
-    if (files.size() == 1)
-    {
-        player->loadURL(URL{File{files[0]}});
-    }
-}
+//void DeckGUI::filesDropped (const StringArray &files, int x, int y)
+//{
+//    std::cout << "DeckGUI::filesDropped" << std::endl;
+//    if (files.size() == 1)
+//    {
+//        player->loadURL(URL{File{files[0]}});
+//    }
+//}
 
 void DeckGUI::timerCallback()
 {
