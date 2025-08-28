@@ -67,6 +67,8 @@ void DeckGUI::setupSliders()
     speedSlider.setSliderStyle(Slider::LinearVertical);
     speedSlider.setTextBoxStyle(Slider::NoTextBox, false, 0, 0);
     speedSlider.setColour(Slider::trackColourId, Colours::transparentBlack); //remove the 'track' i.e. amount of slider value information
+
+    speedSlider.setDoubleClickReturnValue(true, 1.0); //allow user to double click to return to normal tempo/ speed
 }
 
 void DeckGUI::setupLabels()
