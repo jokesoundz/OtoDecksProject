@@ -66,6 +66,7 @@ void DeckGUI::setupSliders()
     speedSlider.setSkewFactorFromMidPoint(1.0); //makes tempo slider more intuitive
     speedSlider.setSliderStyle(Slider::LinearVertical);
     speedSlider.setTextBoxStyle(Slider::NoTextBox, false, 0, 0);
+    speedSlider.setColour(Slider::trackColourId, Colours::transparentBlack); //remove the 'track' i.e. amount of slider value information
 }
 
 void DeckGUI::setupLabels()
@@ -102,40 +103,65 @@ void DeckGUI::paint (Graphics& g)
 
     g.fillAll (getLookAndFeel().findColour (ResizableWindow::backgroundColourId));
 
+    //////////////////////////////////////////////////////////////////////////////
+    //component border
     g.setColour (Colours::grey);
     g.drawRect (getLocalBounds(), 1);
 
-    //g.setColour (Colours::white);
-    //g.setFont (14.0f);
-    //g.drawText ("DeckGUI", getLocalBounds(),
-    //            Justification::centred, true);
 
-    //draw ticks around gain slider
-    //auto gainBounds = volSlider.getBounds();
-    auto min = volSlider.getMinimum();
-    auto max = volSlider.getMaximum();
-    int numTicks = 10;
+    //////////////////////////////////////////////////////////////////////////////////////
+    //draw ticks around vol 'gain' slider
+    auto minV = volSlider.getMinimum();
+    auto maxV = volSlider.getMaximum();
+    int numTicksV = 10;
 
-    int tickLength = 5;
-    //int tickSpacing = gainBounds.getHeight() / (numTicks - 1);
-    double step = (max - min) / (numTicks - 1);
+    int tickLengthV = 5;
+    double stepV = (maxV - minV) / (numTicksV - 1);
 
-    g.setColour(Colours::white);
+    g.setColour(Colours::dimgrey);
 
-    for (int i = 0; i < numTicks; ++i)
+    for (int i = 0; i < numTicksV; ++i)
     {
-        //int y = gainBounds.getY() + i * tickSpacing;
-        double value = min + i * step;
+        double value = minV + i * stepV;
         int y = volSlider.getY() + volSlider.getPositionOfValue(value);
 
         //ticks on left
-        g.drawLine((float)(volSlider.getX() + tickLength*2), (float)y,
-                   (float)(volSlider.getX() + tickLength*3), (float)y, 1.0f);
+        g.drawLine((float)(volSlider.getX() + tickLengthV*2), (float)y,
+                   (float)(volSlider.getX() + tickLengthV*3), (float)y, 1.0f);
 
         //ticks on right
-        g.drawLine((float)(volSlider.getRight() - tickLength*3), (float)y,
-                   (float)(volSlider.getRight() - tickLength*2), (float)y, 1.0f);
+        g.drawLine((float)(volSlider.getRight() - tickLengthV*3), (float)y,
+                   (float)(volSlider.getRight() - tickLengthV*2), (float)y, 1.0f);
     }
+    
+    ////////////////////////////////////////////////////////////////////////////////////
+    //draw ticks around speed 'tempo' slider
+    int tickLengthS = 10;
+
+    int midY = speedSlider.getY() + speedSlider.getHeight() / 2;
+
+    int leftX1 = speedSlider.getX() + tickLengthS * 2;
+    int leftX2 = speedSlider.getX() + tickLengthS * 3;
+
+    int rightX1 = speedSlider.getRight() - tickLengthS * 2;
+    int rightX2 = speedSlider.getRight() - tickLengthS * 3;
+
+    g.setColour(Colours::dimgrey);
+
+    //tick on left
+    g.drawLine(leftX1, midY, leftX2, midY, 1.0f);
+    
+    //tick on right
+    g.drawLine(rightX1, midY, rightX2, midY, 1.0f);
+
+    int topY = speedSlider.getY() + 15;
+    int bottomY = speedSlider.getBottom() - 30;
+
+    g.setColour(Colours::ghostwhite);
+
+    g.drawText("+", speedSlider.getX() + 5, topY - 10, 20, 20, Justification::centred);
+    g.drawText("-", speedSlider.getX() + 5, bottomY + 5, 20, 20, Justification::centred);
+
 }
 
 //NEW LAYOUT
