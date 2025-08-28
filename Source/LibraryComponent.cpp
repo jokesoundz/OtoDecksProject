@@ -171,9 +171,7 @@ Component* LibraryComponent::refreshComponentForCell(
             {
                 if (rowNum < trackLibrary->getTracks().size())
                 {
-                    //trackInfos[rowNum].setShouldDelete(checkbox->getToggleState());
                     trackLibrary->getTracksMutable()[rowNum].setShouldDelete(checkbox->getToggleState());
-                    //trackLibrary->setShouldDeleteForTrack(rowNum, checkbox->getToggleState());
                 }
             };
         }
