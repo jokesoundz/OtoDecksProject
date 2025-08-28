@@ -15,6 +15,7 @@
 #include "WaveformDisplay.h"
 #include "TimeDisplay.h"
 #include "TrackInfoDisplay.h"
+#include "IndicatorLight.h"
 
 //==============================================================================
 /*
@@ -66,8 +67,11 @@ private:
 
     TextButton playPauseButton{"PLAY"}; //initialise to PLAY
     TextButton cueButton{ "CUE" };
+    TextButton setCueButton{ "SET CUE" };
+    IndicatorLight setCueIndicator;
 
     bool cuePreviewActive = false; //flag for cue button mousepressed
+    //bool suppressCueClick = false; //flag to prevent mousepressed running when mouse is clicked once during setCue mode
 
     Slider volSlider; 
     Slider speedSlider;

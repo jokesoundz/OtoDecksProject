@@ -34,12 +34,16 @@ public:
     void setPositionRelative(double pos);
 
     void setCuePointRelative(double pos);
+    void setCueModeActive(bool shouldBeActive);
+
 
 private:
     AudioThumbnail audioThumb;
     bool fileLoaded; 
     double position;
     double cuePosition = -1.0; //initialise to impossible value
+
+    bool setCueActive = false;
     
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (WaveformDisplay)
 };

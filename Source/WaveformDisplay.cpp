@@ -34,9 +34,6 @@ void WaveformDisplay::paint (Graphics& g)
     g.setColour (Colours::grey);
     g.drawRect (getLocalBounds(), 1);   // draw an outline around the component
 
-    //g.setColour(juce::Colours::black);
-    //g.fillRect(getLocalBounds());
-
     g.setColour (Colours::orange);
     if(fileLoaded)
     {
@@ -49,7 +46,7 @@ void WaveformDisplay::paint (Graphics& g)
                                 );
         
         // current position line
-        g.setColour(Colours::lightgreen);
+        g.setColour(setCueActive ? Colours::red : Colours::lightgreen); //if setCueMode is active is true the line will be red, otherwise its green (normally)
         g.drawRect(position * getWidth() - 1, 0, 2, getHeight());
 
         // cue point line
@@ -111,6 +108,11 @@ void WaveformDisplay::setCuePointRelative(double pos)
     repaint();
 }
 
-
-
-
+void WaveformDisplay::setCueModeActive(bool shouldBeActive)
+{
+    if (setCueActive != shouldBeActive)
+    {
+        setCueActive = shouldBeActive;
+        repaint();
+    }
+}

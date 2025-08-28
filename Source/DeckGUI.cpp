@@ -37,6 +37,8 @@ void DeckGUI::setupUI()
 {
     addAndMakeVisible(playPauseButton);
     addAndMakeVisible(cueButton);
+    addAndMakeVisible(setCueButton);
+    addAndMakeVisible(setCueIndicator);
 
     addAndMakeVisible(volSlider);
     addAndMakeVisible(volLabel);
@@ -87,6 +89,7 @@ void DeckGUI::setupListeners()
     playPauseButton.addListener(this);
     cueButton.addListener(this);
     cueButton.addMouseListener(this, false); //for press and hold interaction
+    setCueButton.addListener(this);
 
     volSlider.addListener(this);
     speedSlider.addListener(this);
@@ -182,14 +185,11 @@ void DeckGUI::resized()
     posSlider.setTextBoxStyle(juce::Slider::NoTextBox, false, 0, 0);
     timeDisplay.setBounds(0, rowH * 3, getWidth(), rowH);
 
-    //ORIGINAL BUTTON/ DIAL LAYOUT
-    //playPauseButton.setBounds(0, rowH * 4, getWidth(), rowH);
-    //cueButton.setBounds(0, rowH * 5, getWidth(), rowH);
-    //volSlider.setBounds(border, rowH * 6, getWidth() - border, rowH);
-    //speedSlider.setBounds(border, rowH * 7, getWidth() - border, rowH);
 
     //NEW BUTTON/ DIAL LAYOUT
-    cueButton.setBounds(0, rowH * 4, colW*2, rowH * 2);
+    cueButton.setBounds(0, rowH * 4, colW, rowH * 2);
+    setCueButton.setBounds(colW, rowH * 4, colW, rowH);
+    setCueIndicator.setBounds(colW, rowH * 5, colW, rowH);
     playPauseButton.setBounds(0, rowH * 6, colW*2, rowH*2);
 
     volSlider.setBounds(colW * 5, rowH * 4, colW, rowH * 3.5);
@@ -206,32 +206,76 @@ void DeckGUI::buttonClicked(Button* button)
         std::cout << "Play/Pause button was clicked " << std::endl;
         player->togglePlayPause();
         updatePlayPauseButton();
+        setCueIndicator.setActive(false);
+        waveformDisplay.setCueModeActive(false);
     }
 
-    if (button == &cueButton && !cuePreviewActive)
+    if (button == &cueButton)
     {
-        if (player->isPlaying())
+        //if (suppressCueClick)
+        //{
+        //    suppressCueClick = false;
+        //    return;
+        //}
+        if (setCueIndicator.isActive())
         {
-            player->setCuePoint(); //sets new cuepoint while playing
+            player->setCuePoint();
+            player->setPositionRelative(posSlider.getValue());
+            waveformDisplay.setCuePointRelative(posSlider.getValue());
+            setCueIndicator.setActive(false);
+            waveformDisplay.setCueModeActive(false);
+            return;
+        }
 
-            double cueTime = player->getCurrentPosition();
-            double trackLength = player->getLengthInSeconds();
-            double cueRelative = cueTime / trackLength;
 
-            waveformDisplay.setCuePointRelative(cueRelative);
+        if (!player->isPlaying())
+        {
+            player->jumpToCuePoint();
+            return;
         }
         else
         {
-            player->jumpToCuePoint(); //jumps to current cue point while not playing
+            wasPlayingAlready = true;
+            player->togglePlayPause();
+            player->jumpToCuePoint();
+            return;
+        }
+        
+    }
+    
+
+    if (button == &setCueButton)
+    {
+        if (!player->isPlaying() && !setCueIndicator.isActive())
+        {
+            setCueIndicator.setActive(true);
+            waveformDisplay.setCueModeActive(true);
+        }
+        else if (!player->isPlaying() && setCueIndicator.isActive())
+        {
+            setCueIndicator.setActive(false);
+            waveformDisplay.setCueModeActive(false);
+        }
+        else
+        {
+            return;
         }
     }
+
 }
 
 void DeckGUI::mouseDown(const MouseEvent& event)
 {
     if (event.eventComponent == &cueButton)
     {
+        if (setCueIndicator.isActive()) //should not work if setCueMode is active
+        {
+            //suppressCueClick = true; //to avoid click from activating on mousereleased
+            return;
+        }
+
         wasPlayingAlready = player->isPlaying();
+        
         if (!wasPlayingAlready)
         {
             cuePreviewActive = true;
@@ -243,17 +287,14 @@ void DeckGUI::mouseDown(const MouseEvent& event)
 
 void DeckGUI::mouseUp(const MouseEvent& event)
 {
-    if (event.eventComponent == &cueButton)
+    if (event.eventComponent == &cueButton && cuePreviewActive)
     {
         if (!wasPlayingAlready)
         {
             player->togglePlayPause();
         }
 
-        if (cuePreviewActive)
-        {
-            player->jumpToCuePoint();
-        }
+        player->jumpToCuePoint();
         cuePreviewActive = false;
     }
 }
@@ -271,8 +312,13 @@ void DeckGUI::sliderValueChanged (Slider *slider)
         player->setSpeed(slider->getValue());
     }
     
-    if (slider == &posSlider)
+    if (slider == &posSlider && !setCueIndicator.isActive())
     {
+        player->setPositionRelative(slider->getValue());
+    }
+    else if (slider == &posSlider && setCueIndicator.isActive())
+    {
+        //waveformDisplay.setCuePointRelative(slider->getValue());
         player->setPositionRelative(slider->getValue());
     }
     
@@ -298,20 +344,6 @@ void DeckGUI::sliderDragEnded(Slider* slider)
     }
 }
 
-//bool DeckGUI::isInterestedInFileDrag (const StringArray &files)
-//{
-//    std::cout << "DeckGUI::isInterestedInFileDrag" << std::endl;
-//    return true; 
-//}
-
-//void DeckGUI::filesDropped (const StringArray &files, int x, int y)
-//{
-//    std::cout << "DeckGUI::filesDropped" << std::endl;
-//    if (files.size() == 1)
-//    {
-//        player->loadURL(URL{File{files[0]}});
-//    }
-//}
 
 void DeckGUI::timerCallback()
 {
@@ -319,7 +351,6 @@ void DeckGUI::timerCallback()
     double total = player->getLengthInSeconds();
 
     timeDisplay.updateTime(current, total);
-    //std::cout << "DeckGUI::timerCallback" << std::endl;
     waveformDisplay.setPositionRelative(
             player->getPositionRelative());
 
@@ -336,10 +367,12 @@ void DeckGUI::updatePlayPauseButton()
     if (player->isPlaying())
     {
         playPauseButton.setButtonText("PAUSE");
+        setCueButton.setVisible(false);
     }
     else
     {
         playPauseButton.setButtonText("PLAY");
+        setCueButton.setVisible(true);
     }
 }
 
@@ -347,9 +380,11 @@ void DeckGUI::loadFile(const File& file, const TrackInfo* trackInfo)
 {
     player->loadURL(URL{file});
     waveformDisplay.loadURL(URL{file});
+    waveformDisplay.setCuePointRelative(0.0);
     timeDisplay.loadURL(URL{ file });
 
     //TrackInfo* selectedTrack = &trackLibrary.getTrackInfos()[selectedIndex]
     trackInfoDisplay.setTrackInfo(trackInfo);
     updatePlayPauseButton();
+
 }
