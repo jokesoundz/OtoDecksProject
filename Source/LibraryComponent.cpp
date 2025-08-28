@@ -15,6 +15,7 @@
 LibraryComponent::LibraryComponent(TrackLibrary* libraryPtr)
     : trackLibrary(libraryPtr)
 {
+    setupAssets();
     setupUI();
     setupTable();
     setupCallbacks();
@@ -25,6 +26,18 @@ LibraryComponent::~LibraryComponent()
 }
 
 //==============================================================================
+
+void LibraryComponent::setupAssets()
+{
+    //auto normalBinFile = File::getSpecialLocation(File::currentExecutableFile).getSiblingFile("Assets/delete-bin-line.png");
+    //auto hoverPressedBinFile = File::getSpecialLocation(File::currentExecutableFile).getSiblingFile("Assets/delete-bin-fill.png");
+    // 
+    //deleteIconNormal = ImageFileFormat::loadFrom(normalBinFile);
+    //deleteIconHoverPressed = ImageFileFormat::loadFrom(hoverPressedBinFile);
+
+    deleteIconNormal = ImageFileFormat::loadFrom(BinaryData::deletebinline_png, BinaryData::deletebinline_pngSize);
+    deleteIconHoverPressed = ImageFileFormat::loadFrom(BinaryData::deletebinfill_png, BinaryData::deletebinfill_pngSize);
+}
 
 void LibraryComponent::setupUI()
 {
@@ -38,12 +51,16 @@ void LibraryComponent::setupUI()
     tableHeaderLabel.setJustificationType(Justification::centredLeft);
 
     importButton.setButtonText("Import File(s)...");
-    deleteButton.setButtonText("D");
+    deleteButton.setImages(true, true, true,
+                            deleteIconNormal, 1.0f, Colours::darkslategrey,
+                            deleteIconHoverPressed, 0.7f, Colours::darkslategrey,
+                            deleteIconHoverPressed, 0.5f, Colours::darkslategrey,
+                            0.0f);
 }
 
 void LibraryComponent::setupTable()
 {
-    tableComponent.getHeader().addColumn("del", 1, 30); //should add Button inplace of 'del' text
+    tableComponent.getHeader().addColumn("", 1, 30); //ImageButton sits on top of this space
     tableComponent.getHeader().addColumn("Track Title", 2, 150);
     tableComponent.getHeader().addColumn("Artist", 3, 150);
     tableComponent.getHeader().addColumn("...", 4, 70); //could be used as track length column
@@ -88,7 +105,7 @@ void LibraryComponent::resized()
 
     tableHeaderLabel.setBounds(0, 0, getWidth() - 120, headerHeight);
     importButton.setBounds(getWidth() - 120, 0, 120, headerHeight);
-    deleteButton.setBounds(0, headerHeight, 30, 30);
+    deleteButton.setBounds(0, headerHeight, 30, 28);
 
     tableComponent.setBounds(0, headerHeight, getWidth(), getHeight() - headerHeight);
 }
