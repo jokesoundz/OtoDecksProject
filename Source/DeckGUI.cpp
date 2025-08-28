@@ -61,7 +61,7 @@ void DeckGUI::setupSliders()
     volSlider.setBounds(getLocalBounds().reduced(10));
     volSlider.setTextBoxStyle(Slider::NoTextBox, false, 0, 0);
 
-    speedSlider.setRange(0.1, 10.0);
+    speedSlider.setRange(0.0001, 3.0);
     speedSlider.setValue(1.0); //ensures sliderposition is set to default bpm at start of app
     speedSlider.setSkewFactorFromMidPoint(1.0); //makes tempo slider more intuitive
     speedSlider.setSliderStyle(Slider::LinearVertical);

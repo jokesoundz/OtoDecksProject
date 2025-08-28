@@ -256,23 +256,43 @@ Component* LibraryComponent::refreshComponentForCell(
         
         TextButton* btn = dynamic_cast<TextButton*>(existingComponentToUpdate);
 
-        if (btn == nullptr || btn->getComponentID() != "deckButton" + String(columnId))
+        //if (btn == nullptr || btn->getComponentID() != "deckButton" + String(columnId))
+        //{
+        //    btn = new TextButton("Load to Deck " + String(deckNum));
+        //    btn->setComponentID("deckButton" + String(columnId));
+
+        //    btn->onClick = [this, rowNum, deckNum]()
+        //    {
+        //        if (rowNum < trackLibrary->getTracksMutable().size())
+        //        {
+        //            TrackInfo* track = &trackLibrary->getTracksMutable()[rowNum];
+        //            if (onLoadToDeck)
+        //            {
+        //                onLoadToDeck(track, deckNum);
+        //            }
+        //        }
+        //    };
+        //}
+
+        if (btn == nullptr)
         {
             btn = new TextButton("Load to Deck " + String(deckNum));
             btn->setComponentID("deckButton" + String(columnId));
-
-            btn->onClick = [this, rowNum, deckNum]()
-            {
-                if (rowNum < trackLibrary->getTracksMutable().size())
-                {
-                    TrackInfo* track = &trackLibrary->getTracksMutable()[rowNum];
-                    if (onLoadToDeck)
-                    {
-                        onLoadToDeck(track, deckNum);
-                    }
-                }
-            };
         }
+
+        btn->onClick = [this, rowNum, deckNum]()
+        {
+            if (rowNum < trackLibrary->getTracksMutable().size())
+            {
+                TrackInfo* track = &trackLibrary->getTracksMutable()[rowNum];
+                if (onLoadToDeck)
+                {
+                    onLoadToDeck(track, deckNum);
+                }
+            }
+        };
+        
+
         return btn;
 
     }
