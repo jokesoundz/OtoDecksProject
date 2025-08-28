@@ -179,29 +179,6 @@ Component* LibraryComponent::refreshComponentForCell(
         return checkbox;
     }
 
-    //if (columnId == 1) //delete/ remove track from library column
-    //{
-    //    ToggleButton* checkbox = dynamic_cast<ToggleButton*>(existingComponentToUpdate);
-    //    if (checkbox == nullptr)
-    //    {
-    //        checkbox = new ToggleButton();
-    //        checkbox->setClickingTogglesState(true);
-    //        checkbox->setComponentID("deleteCheckbox");
-    //        addAndMakeVisible(checkbox);
-    //    }
-
-    //    checkbox->onClick = [this, checkbox, rowNum]()
-    //    {
-    //        if (rowNum < trackLibrary->getTracks().size())
-    //        {
-    //            trackLibrary->getTracksMutable()[rowNum].setShouldDelete(checkbox->getToggleState());
-    //        }
-    //    };
-
-    //    checkbox->setToggleState(trackLibrary->getTracksMutable()[rowNum].getShouldDelete(), dontSendNotification);
-    //    return checkbox;
-    //}
-
     if (columnId == 2 || columnId == 3) //track title and artist name columns are editable
     {
         Label* label = dynamic_cast<Label*>(existingComponentToUpdate);
@@ -255,24 +232,6 @@ Component* LibraryComponent::refreshComponentForCell(
         int deckNum = (columnId == 5 ? 1 : 2);
         
         TextButton* btn = dynamic_cast<TextButton*>(existingComponentToUpdate);
-
-        //if (btn == nullptr || btn->getComponentID() != "deckButton" + String(columnId))
-        //{
-        //    btn = new TextButton("Load to Deck " + String(deckNum));
-        //    btn->setComponentID("deckButton" + String(columnId));
-
-        //    btn->onClick = [this, rowNum, deckNum]()
-        //    {
-        //        if (rowNum < trackLibrary->getTracksMutable().size())
-        //        {
-        //            TrackInfo* track = &trackLibrary->getTracksMutable()[rowNum];
-        //            if (onLoadToDeck)
-        //            {
-        //                onLoadToDeck(track, deckNum);
-        //            }
-        //        }
-        //    };
-        //}
 
         if (btn == nullptr)
         {
