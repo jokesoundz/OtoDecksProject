@@ -89,7 +89,7 @@ public:
 private:
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(LibraryComponent)
 
-
+    void setupAssets();
     void setupUI();
     void setupTable();
     void setupCallbacks();
@@ -104,7 +104,10 @@ private:
     //std::vector<std::string> trackTitles;
     Label tableHeaderLabel;
     TextButton importButton; //button for importing files from computer
-    TextButton deleteButton; //button for deleting files from library (dependent on which are selected by checkbox)
+    
+    Image deleteIconNormal;
+    Image deleteIconHoverPressed;
+    ImageButton deleteButton; //button for deleting files from library (dependent on which are selected by checkbox)
 
     //std::vector<File> importedFiles;
     //std::vector<TrackInfo> trackInfos;
