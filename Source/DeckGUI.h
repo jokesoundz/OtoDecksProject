@@ -40,6 +40,7 @@ public:
     void buttonClicked (Button * button) override;
 
     void mouseDown(const MouseEvent& event) override;
+    void mouseDrag(const MouseEvent& event) override;
     void mouseUp(const MouseEvent& event) override;
 
     void updatePlayPauseButton();
@@ -71,7 +72,9 @@ private:
     IndicatorLight setCueIndicator;
 
     bool cuePreviewActive = false; //flag for cue button mousepressed
-    //bool suppressCueClick = false; //flag to prevent mousepressed running when mouse is clicked once during setCue mode
+    double cuePreviewReleasePos = 0.0; //used to hold cue preview position on mouse release
+    bool draggingFromCue = false;
+    Point<int> currentDragPos;
 
     Slider volSlider; 
     Slider speedSlider;

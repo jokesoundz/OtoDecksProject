@@ -282,9 +282,22 @@ void DeckGUI::mouseDown(const MouseEvent& event)
         if (!wasPlayingAlready)
         {
             cuePreviewActive = true;
-            player->jumpToCuePoint();
+            playPauseButton.setButtonText("Release here to play");
+            //player->jumpToCuePoint();
             player->togglePlayPause();
         }
+    }
+}
+
+void DeckGUI::mouseDrag(const MouseEvent& event)
+{
+    if (cuePreviewActive && event.eventComponent == &cueButton)
+    {
+        draggingFromCue = true;
+        currentDragPos = event.getScreenPosition();
+
+        cuePreviewReleasePos = player->getPositionRelative();
+
     }
 }
 
@@ -292,13 +305,28 @@ void DeckGUI::mouseUp(const MouseEvent& event)
 {
     if (event.eventComponent == &cueButton && cuePreviewActive)
     {
+
+        Point<int> releasePos = event.getScreenPosition();
+
         if (!wasPlayingAlready)
         {
             player->togglePlayPause();
         }
 
         player->jumpToCuePoint();
+
+        auto playBounds = playPauseButton.getScreenBounds();
+        if (draggingFromCue && playBounds.contains(releasePos))
+        {
+            player->setPositionRelative(cuePreviewReleasePos);
+            player->togglePlayPause(); //allow track to continue playback
+            updatePlayPauseButton();
+        }
+
         cuePreviewActive = false;
+        draggingFromCue = false;
+        playPauseButton.setButtonText("PLAY");
+
     }
 }
 
@@ -367,14 +395,14 @@ void DeckGUI::timerCallback()
 
 void DeckGUI::updatePlayPauseButton()
 {
-    if (player->isPlaying())
+    if (player->isPlaying() && !cuePreviewActive)
     {
         playPauseButton.setButtonText("PAUSE");
         //setCueButton.setVisible(false);
         setCueButton.setAlpha(0.4f);
         setCueButton.setEnabled(false);
     }
-    else
+    else if (!player->isPlaying() && !cuePreviewActive)
     {
         playPauseButton.setButtonText("PLAY");
         //setCueButton.setVisible(true);
