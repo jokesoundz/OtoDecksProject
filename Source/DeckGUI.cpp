@@ -224,6 +224,8 @@ void DeckGUI::buttonClicked(Button* button)
             waveformDisplay.setCuePointRelative(posSlider.getValue());
             setCueIndicator.setActive(false);
             waveformDisplay.setCueModeActive(false);
+            //playPauseButton.setAlpha(1.0f);
+
             return;
         }
 
@@ -250,6 +252,7 @@ void DeckGUI::buttonClicked(Button* button)
         {
             setCueIndicator.setActive(true);
             waveformDisplay.setCueModeActive(true);
+
         }
         else if (!player->isPlaying() && setCueIndicator.isActive())
         {
@@ -367,12 +370,16 @@ void DeckGUI::updatePlayPauseButton()
     if (player->isPlaying())
     {
         playPauseButton.setButtonText("PAUSE");
-        setCueButton.setVisible(false);
+        //setCueButton.setVisible(false);
+        setCueButton.setAlpha(0.4f);
+        setCueButton.setEnabled(false);
     }
     else
     {
         playPauseButton.setButtonText("PLAY");
-        setCueButton.setVisible(true);
+        //setCueButton.setVisible(true);
+        setCueButton.setAlpha(1.0f);
+        setCueButton.setEnabled(true);
     }
 }
 
